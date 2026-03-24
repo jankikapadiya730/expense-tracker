@@ -15,11 +15,16 @@ const Analytics = ({ expenses, currency = '₹' }) => {
   }, []);
 
   // Process data for spending (last 7 entries)
-  const timeData = expenses.slice(0, 7).reverse().map(e => ({
-    name: e.title.length > 10 ? e.title.substring(0, 8) + '...' : e.title,
-    fullTitle: e.title,
-    amount: parseFloat(e.converted_amount || e.amount)
-  }));
+  const timeData = expenses.slice(0, 7).reverse().map((e, index) => {
+    let name = e.title.length > 10 ? e.title.substring(0, 8) + '...' : e.title;
+    // Ensure unique keys for Recharts by adding zero-width spaces
+    name = name + '\u200B'.repeat(index);
+    return {
+      name,
+      fullTitle: e.title,
+      amount: parseFloat(e.converted_amount || e.amount)
+    };
+  });
 
   const COLORS = ['#0F172A', '#6366F1', '#94A3B8', '#1E293B', '#4F46E5', '#334155'];
 
