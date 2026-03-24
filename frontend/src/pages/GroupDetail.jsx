@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useExpenses } from '../hooks/useExpenses';
 import Layout from '../components/Layout';
 import { useGroups } from '../hooks/useGroups';
-import { ArrowLeft, Plus, Receipt, User, Wallet, FileText, Table, Bell, Loader2, BarChart3, TrendingUp, Clock } from 'lucide-react';
+import { ArrowLeft, Copy, Check, Receipt, User, Wallet, FileText, Table, Bell, Loader2, BarChart3, TrendingUp, Clock } from 'lucide-react';
 
 import AddExpenseModal from '../components/AddExpenseModal';
 import { useAuthStore } from '../store/authStore';
@@ -17,6 +17,7 @@ const GroupDetail = () => {
   const { id } = useParams();
   const [isAddExpenseOpen, setIsAddExpenseOpen] = React.useState(false);
   const [showAnalytics, setShowAnalytics] = React.useState(false);
+  const [codeCopied, setCodeCopied] = React.useState(false);
   const { user, token } = useAuthStore();
 
 
@@ -388,7 +389,7 @@ const GroupDetail = () => {
                                   }}
                                   className="px-4 py-2 bg-[#0F172A] text-white rounded-full text-[9px] font-black uppercase tracking-widest hover:bg-[#6366F1] transition-all"
                                 >
-                                  SYNC
+                                  SETTLE
                                 </button>
                               )}
                               {myBalance > 0 && balance.net_balance < 0 && !isMe && (
@@ -409,15 +410,32 @@ const GroupDetail = () => {
 
             <motion.div variants={itemVariants} className="glass-card bg-[#F8FAFC] border-slate-200 shadow-sm p-10">
                <span className="text-[9px] font-black text-[#6366F1] uppercase tracking-[0.4em] mb-4 block">Network Access</span>
-               <h3 className="font-bold text-2xl text-[#0F172A] mb-8 tracking-tight">Sync Code</h3>
-               <div className="bg-white border-2 border-slate-100 p-6 rounded-full flex items-center justify-between group/code cursor-pointer hover:border-[#6366F1] transition-all"
-                    onClick={() => { navigator.clipboard.writeText(group?.invite_code); alert('CODE_COPIED'); }}>
-                  <span className="font-mono font-bold text-2xl tracking-[0.4em] text-[#0F172A] pl-4">{group?.invite_code || "SYNCING"}</span>
-                  <div className="w-10 h-10 bg-slate-900 rounded-full flex items-center justify-center text-white">
-                     <Plus size={18} />
-                  </div>
+               <h3 className="font-bold text-2xl text-[#0F172A] mb-6 tracking-tight">Invite Code</h3>
+               <div
+                 className={`bg-white border-2 p-5 rounded-2xl flex items-center justify-between cursor-pointer transition-all ${
+                   codeCopied ? 'border-[#84CC16] bg-[#f0fdf4]' : 'border-slate-100 hover:border-[#6366F1]'
+                 }`}
+                 onClick={() => {
+                   if (!group?.invite_code) return;
+                   navigator.clipboard.writeText(group.invite_code);
+                   setCodeCopied(true);
+                   setTimeout(() => setCodeCopied(false), 2000);
+                 }}
+               >
+                 <span className="font-mono font-bold text-xl tracking-[0.3em] text-[#0F172A] pl-2 select-all">
+                   {group?.invite_code || '------'}
+                 </span>
+                 <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
+                   codeCopied ? 'bg-[#84CC16] text-white' : 'bg-slate-900 text-white hover:bg-[#6366F1]'
+                 }`}>
+                   {codeCopied ? <Check size={16} /> : <Copy size={16} />}
+                 </div>
                </div>
-               <p className="text-[10px] text-slate-400 mt-6 font-black uppercase tracking-widest px-4">SECURE PEER-TO-PEER ENCRYPTION</p>
+               <p className={`text-[9px] font-black uppercase tracking-widest mt-4 px-2 transition-colors ${
+                 codeCopied ? 'text-[#84CC16]' : 'text-slate-400'
+               }`}>
+                 {codeCopied ? 'Code copied to clipboard' : 'Click to copy · peer-to-peer encrypted'}
+               </p>
             </motion.div>
           </div>
         </div>
