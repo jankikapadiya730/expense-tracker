@@ -18,11 +18,15 @@ const GroupDetail = () => {
   const [isAddExpenseOpen, setIsAddExpenseOpen] = React.useState(false);
   const [showAnalytics, setShowAnalytics] = React.useState(false);
   const [codeCopied, setCodeCopied] = React.useState(false);
+  const [linkCopied, setLinkCopied] = React.useState(false);
+  const [inviteEmail, setInviteEmail] = React.useState('');
+
   const { user, token } = useAuthStore();
 
 
   const { getExpenses, getBalances } = useExpenses(id);
-  const { getGroupDetail } = useGroups();
+  const { getGroupDetail, inviteByEmail } = useGroups();
+
   const queryClient = useQueryClient();
   
   const { data: group, isLoading: isGroupLoading } = getGroupDetail(id);
@@ -436,7 +440,69 @@ const GroupDetail = () => {
                }`}>
                  {codeCopied ? 'Code copied to clipboard' : 'Click to copy · peer-to-peer encrypted'}
                </p>
+
+               <div className="mt-8 pt-8 border-t border-slate-200">
+                  <span className="text-[9px] font-black text-[#6366F1] uppercase tracking-[0.4em] mb-4 block">Private Access Link</span>
+                  <div
+                    className={`bg-white border-2 p-4 rounded-2xl flex items-center justify-between cursor-pointer transition-all ${
+                      linkCopied ? 'border-[#84CC16] bg-[#f0fdf4]' : 'border-slate-100 hover:border-[#6366F1]'
+                    }`}
+                    onClick={() => {
+                      if (!group?.invite_code) return;
+                      const link = `http://localhost:5173/groups/join/${group.invite_code}`;
+                      navigator.clipboard.writeText(link);
+                      setLinkCopied(true);
+                      setTimeout(() => setLinkCopied(false), 2000);
+                    }}
+                  >
+                    <span className="text-[10px] font-bold text-slate-400 truncate max-w-[180px]">
+                      {group?.invite_code ? `.../join/${group.invite_code}` : 'Generating link...'}
+                    </span>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                      linkCopied ? 'bg-[#84CC16] text-white' : 'bg-slate-900 text-white'
+                    }`}>
+                      {linkCopied ? <Check size={14} /> : <Copy size={14} />}
+                    </div>
+                  </div>
+                  <p className={`text-[9px] font-black uppercase tracking-widest mt-4 px-2 transition-colors ${
+                    linkCopied ? 'text-[#84CC16]' : 'text-slate-400'
+                  }`}>
+                    {linkCopied ? 'Link copied to clipboard' : 'Share link for direct access'}
+                  </p>
+               </div>
+
+               <div className="mt-8 pt-8 border-t border-slate-200">
+                  <span className="text-[9px] font-black text-[#6366F1] uppercase tracking-[0.4em] mb-4 block">Email Invitation</span>
+                  <div className="flex gap-2">
+                    <input 
+                      type="email" 
+                      placeholder="PEER@NETWORK.COM"
+                      value={inviteEmail}
+                      onChange={(e) => setInviteEmail(e.target.value)}
+                      className="flex-1 bg-white border border-slate-200 rounded-xl px-4 py-3 text-[10px] font-bold text-[#0F172A] focus:ring-1 focus:ring-[#6366F1] outline-none"
+                    />
+                    <button 
+                      onClick={() => {
+                        if (!inviteEmail) return;
+                        inviteByEmail.mutate({ groupId: id, email: inviteEmail }, {
+                          onSuccess: () => {
+                            alert(`Invitation sent to ${inviteEmail}`);
+                            setInviteEmail('');
+                          },
+                          onError: (err) => {
+                            alert(err.response?.data?.detail || 'Failed to send invitation');
+                          }
+                        });
+                      }}
+                      disabled={inviteByEmail.isPending}
+                      className="bg-[#0F172A] text-white px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-[#6366F1] transition-all disabled:opacity-50"
+                    >
+                      {inviteByEmail.isPending ? 'SENDING...' : 'INVITE'}
+                    </button>
+                  </div>
+               </div>
             </motion.div>
+
           </div>
         </div>
       </motion.div>

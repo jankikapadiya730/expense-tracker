@@ -8,6 +8,8 @@ import GroupDetail from './pages/GroupDetail'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import { useAuthStore } from './store/authStore'
+import JoinGroup from './pages/JoinGroup'
+
 
 const queryClient = new QueryClient()
 
@@ -33,7 +35,12 @@ const router = createBrowserRouter([
     path: "/groups/:id",
     element: <ProtectedRoute><GroupDetail /></ProtectedRoute>,
   },
+  {
+    path: "/groups/join/:inviteCode",
+    element: <ProtectedRoute><JoinGroup /></ProtectedRoute>,
+  },
 ])
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

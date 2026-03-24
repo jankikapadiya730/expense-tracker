@@ -7,6 +7,9 @@ from .serializers import GroupSerializer, GroupMemberSerializer
 from expenses.models import Expense, ExpenseSplit
 from settlements.models import Settlement
 from django.db.models import Sum
+from django.core.mail import send_mail
+from django.conf import settings
+
 
 class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
@@ -119,3 +122,41 @@ class GroupViewSet(viewsets.ModelViewSet):
             "settled_at": s.settled_at,
             "is_confirmed": s.is_confirmed
         } for s in settlements])
+
+    @decorators.action(detail=True, methods=['post'])
+    def invite_by_email(self, request, pk=None):
+        group = self.get_object()
+        email = request.data.get('email')
+        
+        if not email:
+            return Response({"detail": "Email is required."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        invite_link = f"http://localhost:5173/groups/join/{group.invite_code}"
+        
+        subject = f"Invitation to join {group.name} on SplitSphere"
+        message = f"""
+Hi,
+
+{request.user.username} has invited you to join the group "{group.name}" on SplitSphere.
+
+You can join the group by clicking the link below:
+{invite_link}
+
+Alternatively, you can use the invite code: {group.invite_code}
+
+Happy splitting!
+The SplitSphere Team
+        """
+        
+        try:
+            send_mail(
+                subject,
+                message,
+                settings.DEFAULT_FROM_EMAIL,
+                [email],
+                fail_silently=False,
+            )
+            return Response({"detail": f"Invitation sent to {email}."}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"detail": f"Failed to send email: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+

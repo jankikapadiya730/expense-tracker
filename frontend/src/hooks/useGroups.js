@@ -54,6 +54,16 @@ export const useGroups = () => {
     enabled: !!token && !!id,
   });
 
-  return { getGroups, getGroupDetail, createGroup, joinGroup };
+  const inviteByEmail = useMutation({
+    mutationFn: async ({ groupId, email }) => {
+      const { data } = await axios.post(`${API_URL}/groups/${groupId}/invite_by_email/`, { email }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      return data;
+    },
+  });
+
+  return { getGroups, getGroupDetail, createGroup, joinGroup, inviteByEmail };
 
 };
+
