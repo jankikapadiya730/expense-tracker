@@ -79,19 +79,20 @@ class GroupViewSet(viewsets.ModelViewSet):
         for member in members:
             user = member.user
             # Total paid by this user in this group (expenses they covered)
-            paid = Expense.objects.filter(group=group, paid_by=user, is_deleted=False).aggregate(total=Sum('amount'))['total'] or 0
+            paid = Expense.objects.filter(group=group, paid_by=user, is_deleted=False).aggregate(total=Sum('converted_amount'))['total'] or 0
             
             # Total owed by this user in this group (their share of expenses)
-            owed = ExpenseSplit.objects.filter(expense__group=group, user=user, expense__is_deleted=False).aggregate(total=Sum('share_amount'))['total'] or 0
+            owed = ExpenseSplit.objects.filter(expense__group=group, user=user, expense__is_deleted=False).aggregate(total=Sum('converted_share_amount'))['total'] or 0
             
             # Settlements made by this user (paying others)
-            settlements_made = Settlement.objects.filter(group=group, paid_by=user, is_confirmed=True).aggregate(total=Sum('amount'))['total'] or 0
+            settlements_made = Settlement.objects.filter(group=group, paid_by=user, is_confirmed=True).aggregate(total=Sum('converted_amount'))['total'] or 0
             
             # Settlements received by this user (being paid by others)
-            settlements_received = Settlement.objects.filter(group=group, paid_to=user, is_confirmed=True).aggregate(total=Sum('amount'))['total'] or 0
+            settlements_received = Settlement.objects.filter(group=group, paid_to=user, is_confirmed=True).aggregate(total=Sum('converted_amount'))['total'] or 0
             
             # Net balance: (Paid + Settlements Made) - (Owed + Settlements Received)
             net = (paid + settlements_made) - (owed + settlements_received)
+
             
             balances.append({
                 "user": {

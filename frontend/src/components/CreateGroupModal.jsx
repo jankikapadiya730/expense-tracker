@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
 import { X, UserPlus, Trash2 } from 'lucide-react';
 import { useGroups } from '../hooks/useGroups';
+import { useCurrencies } from '../hooks/useCurrencies';
 import { motion, AnimatePresence } from 'framer-motion';
+
 
 const CreateGroupModal = ({ isOpen, onClose }) => {
   const [name, setName] = useState('');
   const [category, setCategory] = useState('friends');
+  const [currency, setCurrency] = useState('INR');
   const [description, setDescription] = useState('');
   const [memberInput, setMemberInput] = useState('');
   const [initialMembers, setInitialMembers] = useState([]);
   
   const { createGroup } = useGroups();
+  const { getSupportedCurrencies } = useCurrencies();
   
   const addMember = () => {
     if (memberInput.trim() && !initialMembers.includes(memberInput.trim())) {
@@ -28,9 +32,11 @@ const CreateGroupModal = ({ isOpen, onClose }) => {
     createGroup.mutate({ 
       name, 
       category, 
+      currency,
       description,
       initial_members: initialMembers 
     }, {
+
       onSuccess: () => {
         onClose();
         setName('');
@@ -94,6 +100,26 @@ const CreateGroupModal = ({ isOpen, onClose }) => {
                     </select>
                   </div>
                 </div>
+
+                <div className="space-y-3">
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] ml-6">Universal Currency</label>
+                    <div className="relative">
+                      <select 
+                        value={currency}
+                        onChange={(e) => setCurrency(e.target.value)}
+                        className="input-field w-full h-14 bg-white/60 rounded-full px-8 appearance-none cursor-pointer pr-12 font-bold text-[#0F172A]"
+                      >
+                        {getSupportedCurrencies.data?.map(curr => (
+                          <option key={curr} value={curr}>{curr}</option>
+                        ))}
+                        {!getSupportedCurrencies.data && <option value="INR">INR</option>}
+                      </select>
+                      <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-[#6366F1] font-black text-[10px]">
+                        CORE
+                      </div>
+                    </div>
+                </div>
+
 
                 <div className="space-y-3">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] ml-6">Description</label>

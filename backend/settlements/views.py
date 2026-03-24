@@ -87,9 +87,11 @@ class SettlementViewSet(viewsets.ModelViewSet):
                 paid_by=request.user,
                 paid_to=paid_to,
                 amount=amount,
+                currency=group.currency,
                 recorded_by=request.user,
                 is_confirmed=True
             )
+
 
             
             return Response(SettlementSerializer(settlement).data, status=status.HTTP_201_CREATED)

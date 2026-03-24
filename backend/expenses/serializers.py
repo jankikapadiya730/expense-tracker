@@ -8,8 +8,9 @@ class ExpenseSplitSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ExpenseSplit
-        fields = ('id', 'user', 'user_id', 'share_amount', 'percentage', 'shares', 'is_settled', 'settled_at')
-        read_only_fields = ('id', 'is_settled', 'settled_at')
+        fields = ('id', 'user', 'user_id', 'share_amount', 'converted_share_amount', 'percentage', 'shares', 'is_settled', 'settled_at')
+        read_only_fields = ('id', 'is_settled', 'settled_at', 'converted_share_amount')
+
 
 class ExpenseSerializer(serializers.ModelSerializer):
     paid_by = UserSerializer(read_only=True)
@@ -18,9 +19,10 @@ class ExpenseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Expense
-        fields = ('id', 'group', 'title', 'description', 'amount', 'currency', 'converted_amount_inr', 'category', 'paid_by', 'paid_by_id', 'date', 'due_date', 'receipt_image', 'ocr_extracted', 'split_type', 'is_recurring', 'notes', 'created_by', 'created_at', 'splits')
+        fields = ('id', 'group', 'title', 'description', 'amount', 'currency', 'converted_amount', 'category', 'paid_by', 'paid_by_id', 'date', 'due_date', 'receipt_image', 'ocr_extracted', 'split_type', 'is_recurring', 'notes', 'created_by', 'created_at', 'splits')
 
-        read_only_fields = ('id', 'created_at', 'created_by', 'converted_amount_inr')
+        read_only_fields = ('id', 'created_at', 'created_by', 'converted_amount')
+
 
     def validate(self, data):
         splits = data.get('splits', [])

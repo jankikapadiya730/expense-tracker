@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { X, Receipt, Scan, Loader2, Users, CheckCircle2, Circle, Camera } from 'lucide-react';
 import { useExpenses } from '../hooks/useExpenses';
+import { useCurrencies } from '../hooks/useCurrencies';
 import Tesseract from 'tesseract.js';
+
 import { motion, AnimatePresence } from 'framer-motion';
 
 const AddExpenseModal = ({ isOpen, onClose, group }) => {
@@ -18,13 +20,19 @@ const AddExpenseModal = ({ isOpen, onClose, group }) => {
 
   
   const { createExpense } = useExpenses(group?.id);
+  const { getSupportedCurrencies } = useCurrencies();
+
 
   useEffect(() => {
     if (isOpen && group?.memberships) {
       setSelectedParticipants(group.memberships.map(m => m.user.id));
       setPaidBy(group.memberships[0]?.user.id || '');
+      if (group.currency) {
+        setCurrency(group.currency);
+      }
     }
   }, [group, isOpen]);
+
 
   const toggleAll = () => {
     if (selectedParticipants.length === group.memberships.length) {
@@ -222,10 +230,12 @@ const AddExpenseModal = ({ isOpen, onClose, group }) => {
                                onChange={(e) => setCurrency(e.target.value)}
                                className="input-field w-32 h-16 appearance-none text-center font-black text-[#0F172A] bg-slate-50/50 rounded-full border-slate-200"
                              >
-                               {['INR', 'USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'AED'].map(c => (
+                               {getSupportedCurrencies.data?.map(c => (
                                   <option key={c} value={c}>{c}</option>
                                ))}
+                               {!getSupportedCurrencies.data && <option value="INR">INR</option>}
                              </select>
+
                           </div>
                           <input 
                             type="number" 
