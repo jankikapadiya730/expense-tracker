@@ -181,8 +181,8 @@ const AddExpenseModal = ({ isOpen, onClose, group }) => {
                    <Receipt size={24} />
                 </div>
                 <div>
-                  <h2 className="text-3xl font-bold tracking-tight text-[#0F172A] uppercase">Initialize Entry</h2>
-                  <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.4em] mt-2 block">SEC_NODE // {group?.name || 'SYNCING'}</p>
+                  <h2 className="text-3xl font-bold tracking-tight text-[#0F172A] uppercase">Add New Expense</h2>
+                  <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.4em] mt-2 block">Group // {group?.name || 'Loading...'}</p>
                 </div>
               </div>
               <button 
@@ -197,7 +197,7 @@ const AddExpenseModal = ({ isOpen, onClose, group }) => {
             {!group ? (
                <div className="flex-1 flex flex-col items-center justify-center p-24 space-y-8">
                   <div className="w-12 h-12 border-4 border-slate-100 border-t-[#6366F1] rounded-full animate-spin" />
-                  <p className="text-slate-400 font-black uppercase tracking-widest text-xs">Querying Metadata...</p>
+                  <p className="text-slate-400 font-black uppercase tracking-widest text-xs">Loading Group Data...</p>
                </div>
             ) : (
             <div className="flex-1 overflow-y-auto p-12 custom-scrollbar space-y-16">
@@ -206,10 +206,10 @@ const AddExpenseModal = ({ isOpen, onClose, group }) => {
                 {/* Left: Input Matrix */}
                 <div className="space-y-12">
                    <div className="space-y-6">
-                      <label className="text-[10px] font-black text-[#6366F1] uppercase tracking-[0.4em] block ml-6">Entry Identifier</label>
+                      <label className="text-[10px] font-black text-[#6366F1] uppercase tracking-[0.4em] block ml-6">Expense Title</label>
                       <input 
                          type="text" 
-                         placeholder="GLOBAL_EXPENSE_TAG" 
+                         placeholder="e.g., Dinner at Restaurant" 
                          value={title}
                          onChange={(e) => setTitle(e.target.value)}
                          className="input-field w-full text-2xl h-16 rounded-full px-10 bg-slate-50/50 border-slate-200"
@@ -240,7 +240,7 @@ const AddExpenseModal = ({ isOpen, onClose, group }) => {
 
                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                       <div className="space-y-3">
-                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-6">Source Node</label>
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-6">Paid By</label>
                         <select 
                           value={paidBy}
                           onChange={(e) => setPaidBy(e.target.value)}
@@ -253,7 +253,7 @@ const AddExpenseModal = ({ isOpen, onClose, group }) => {
                       </div>
                       
                       <div className="space-y-3">
-                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-6">Deadline (Sync)</label>
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-6">Due Date</label>
                         <input 
                           type="date" 
                           value={dueDate}
@@ -264,24 +264,24 @@ const AddExpenseModal = ({ isOpen, onClose, group }) => {
                    </div>
 
                    <div className="space-y-3">
-                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-6">Category Sector</label>
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-6">Category</label>
                         <select 
                           value={category}
                           onChange={(e) => setCategory(e.target.value)}
                           className="input-field w-full h-14 bg-white/60 rounded-full px-8 appearance-none cursor-pointer border-slate-200"
                         >
-                            <option value="food">FOOD_RESOURCES</option>
-                            <option value="transport">LOGISTICS_BASE</option>
-                            <option value="hotel">DWELLING_UNIT</option>
-                            <option value="shopping">ASSET_ACQUISITION</option>
-                            <option value="entertainment">COGNITIVE_RECREATION</option>
-                            <option value="other">UNCATEGORIZED_FLOW</option>
+                            <option value="food">FOOD</option>
+                            <option value="transport">TRANSPORT</option>
+                            <option value="hotel">HOTEL / STAY</option>
+                            <option value="shopping">SHOPPING</option>
+                            <option value="entertainment">ENTERTAINMENT</option>
+                            <option value="other">OTHER</option>
                         </select>
                     </div>
 
                     <label className="h-16 flex items-center gap-4 cursor-pointer justify-center hover:bg-slate-50 transition-all border-2 border-dashed border-slate-100 rounded-full group w-full bg-white/40">
                        {isScanning ? <Loader2 size={20} className="animate-spin text-[#6366F1]" /> : <Camera size={20} className="text-slate-300 group-hover:text-[#6366F1] transition-colors" />}
-                       <span className="text-[10px] font-black text-slate-400 group-hover:text-[#0F172A] transition-colors uppercase tracking-[0.3em]">Digitalize Neural Receipt</span>
+                       <span className="text-[10px] font-black text-slate-400 group-hover:text-[#0F172A] transition-colors uppercase tracking-[0.3em]">Scan Receipt</span>
                        <input type="file" hidden accept="image/*" onChange={handleScan} disabled={isScanning} />
                     </label>
                 </div>
@@ -289,7 +289,7 @@ const AddExpenseModal = ({ isOpen, onClose, group }) => {
                 {/* Right: Strategy Cluster */}
                 <div className="space-y-12">
                   <div className="space-y-6">
-                     <label className="text-[10px] font-black text-[#6366F1] uppercase tracking-[0.4em] block ml-6">Splitting Protocol</label>
+                     <label className="text-[10px] font-black text-[#6366F1] uppercase tracking-[0.4em] block ml-6">Split Strategy</label>
                      <div className="grid grid-cols-2 gap-4">
                        {['equal', 'exact', 'percentage', 'shares'].map((type) => (
                          <button
@@ -313,14 +313,14 @@ const AddExpenseModal = ({ isOpen, onClose, group }) => {
                     <div className="flex items-center justify-between mb-8">
                         <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] flex items-center gap-4">
                             <Users size={14} className="text-[#6366F1]" />
-                            {selectedParticipants.length} NODES_SYNCED
+                            {selectedParticipants.length} People Included
                         </span>
                         <button 
                             type="button" 
                             onClick={toggleAll}
                             className="text-[9px] font-black text-[#6366F1] hover:text-[#0F172A] uppercase tracking-[0.3em] transition-all"
                         >
-                            {selectedParticipants.length === group?.memberships?.length ? 'SYSTEM_RESET' : 'SYNC_ALL'}
+                            {selectedParticipants.length === group?.memberships?.length ? 'RESET' : 'SELECT ALL'}
                         </button>
                     </div>
                     <div className="grid grid-cols-2 gap-4 max-h-60 overflow-y-auto custom-scrollbar pr-2">
@@ -353,7 +353,7 @@ const AddExpenseModal = ({ isOpen, onClose, group }) => {
                   animate={{ opacity: 1, y: 0 }}
                   className="space-y-8 pt-16 border-t border-slate-100"
                 >
-                  <label className="text-[10px] font-black text-[#6366F1] uppercase tracking-[0.4em] block ml-6">Node-Specific Allocation</label>
+                  <label className="text-[10px] font-black text-[#6366F1] uppercase tracking-[0.4em] block ml-6">Individual Split</label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {group?.memberships?.map(m => (
                       <div key={m.user.id} className={`flex items-center justify-between p-6 rounded-[1.75rem] border transition-all ${selectedParticipants.includes(m.user.id) ? 'bg-white border-slate-200 shadow-sm' : 'opacity-10 pointer-events-none'}`}>
@@ -386,7 +386,7 @@ const AddExpenseModal = ({ isOpen, onClose, group }) => {
                 disabled={createExpense.isPending || !amount || parseFloat(amount) <= 0 || !title || selectedParticipants.length === 0}
                 className="btn-primary w-full h-16 rounded-full"
               >
-                {createExpense.isPending ? 'SYNCHRONIZING_DATA...' : 'INITIALIZE SYNC'}
+                {createExpense.isPending ? 'SAVING EXPENSE...' : 'ADD EXPENSE'}
               </button>
             </div>
           </motion.div>

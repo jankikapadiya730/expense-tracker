@@ -13,9 +13,10 @@ const Analytics = ({ expenses }) => {
     return acc;
   }, []);
 
-  // Process data for spending over time (last 7 days/entries)
+  // Process data for spending (last 7 entries)
   const timeData = expenses.slice(0, 7).reverse().map(e => ({
-    name: new Date(e.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
+    name: e.title.length > 10 ? e.title.substring(0, 8) + '...' : e.title,
+    fullTitle: e.title,
     amount: parseFloat(e.amount)
   }));
 
@@ -24,7 +25,7 @@ const Analytics = ({ expenses }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8">
       <div className="glass-card p-8 min-h-[350px] bg-white/40 border-slate-200/50">
-        <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-10">Sector Allocation (Category)</h3>
+        <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-10">Spending by Category</h3>
         <div className="h-[200px]">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
@@ -58,7 +59,7 @@ const Analytics = ({ expenses }) => {
       </div>
 
       <div className="glass-card p-8 min-h-[350px] bg-white/40 border-slate-200/50">
-        <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-10">Temporal Flux (Recent Entries)</h3>
+        <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-10">Recent Expenses</h3>
         <div className="h-[220px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={timeData}>
@@ -68,6 +69,7 @@ const Analytics = ({ expenses }) => {
                  cursor={{ fill: 'rgba(99, 102, 241, 0.05)', radius: 8 }}
                  contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.95)', border: '1px solid #E2E8F0', borderRadius: '16px', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.05)', backdropFilter: 'blur(8px)' }}
                  itemStyle={{ color: '#0F172A', fontWeight: 'bold', fontSize: '11px', textTransform: 'uppercase' }}
+                 formatter={(value, name, props) => [`₹${value.toLocaleString()}`, props.payload.fullTitle]}
               />
               <Bar dataKey="amount" fill="#0F172A" radius={[20, 20, 20, 20]} barSize={12} />
             </BarChart>

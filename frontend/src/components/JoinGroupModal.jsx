@@ -35,7 +35,7 @@ const JoinGroupModal = ({ isOpen, onClose }) => {
             className="glass-card w-full max-w-sm bg-white/90 p-0 overflow-hidden shadow-[0_32px_64px_rgba(15,23,42,0.15)] relative border-slate-200"
           >
             <div className="p-8 border-b border-slate-100 flex items-center justify-between">
-              <h2 className="text-xl font-bold text-[#0F172A] tracking-tight uppercase">Network Access</h2>
+              <h2 className="text-xl font-bold text-[#0F172A] tracking-tight uppercase">Join Group</h2>
               <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-400 hover:text-[#0F172A] transition-all">
                 <X size={18} />
               </button>
@@ -44,26 +44,26 @@ const JoinGroupModal = ({ isOpen, onClose }) => {
             <form onSubmit={handleSubmit} className="p-8 space-y-10">
               <div className="space-y-6">
                 <div>
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-4 block text-center">Sync Code Required</label>
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-4 block text-center">Enter Invite Code</label>
                   <input 
                     type="text" 
-                    placeholder="ALPHA-SYNC-0" 
+                    placeholder="CODE123" 
                     value={inviteCode}
                     onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
                     className="input-field w-full text-center font-bold tracking-[0.4em] text-2xl h-16 uppercase bg-slate-50/50 rounded-full border-slate-200"
                     required
                   />
-                  <p className="text-[9px] text-slate-400 mt-6 text-center leading-relaxed font-black uppercase tracking-widest px-4">Secure node established on authorization.</p>
+                  <p className="text-[9px] text-slate-400 mt-6 text-center leading-relaxed font-black uppercase tracking-widest px-4">You will be added to the group once authorized.</p>
                 </div>
               </div>
 
-              <button 
-                type="submit" 
-                disabled={joinGroup.isPending}
-                className="btn-primary w-full"
-              >
-                {joinGroup.isPending ? 'SYNCHRONIZING...' : 'AUTHORIZE JOIN'}
-              </button>
+                <button 
+                  type="submit" 
+                  disabled={joinGroup.isPending}
+                  className="btn-primary w-full"
+                >
+                  {joinGroup.isPending ? 'JOINING...' : 'JOIN GROUP'}
+                </button>
             </form>
           </motion.div>
         </div>

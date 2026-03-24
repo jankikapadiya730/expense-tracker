@@ -124,7 +124,7 @@ const GroupDetail = () => {
         <motion.div variants={itemVariants}>
           <Link to="/" className="inline-flex items-center gap-3 text-slate-400 hover:text-[#0F172A] mb-8 group transition-all">
             <ArrowLeft size={16} className="group-hover:-translate-x-1.5 transition-transform" />
-            <span className="text-[10px] font-black uppercase tracking-[0.3em]">Operational Core</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.3em]">Back to Dashboard</span>
           </Link>
         </motion.div>
 
@@ -138,9 +138,9 @@ const GroupDetail = () => {
             <div className="space-y-4">
               <div className="flex items-center gap-6">
                  <h1 className="text-6xl font-bold tracking-[-0.05em] text-[#0F172A] leading-none uppercase">{group?.name}</h1>
-                 <span className="px-4 py-1.5 rounded-full bg-slate-100 text-[9px] uppercase font-black tracking-[0.2em] text-[#6366F1] border border-slate-200">{group?.category} / SECTOR</span>
+                 <span className="px-4 py-1.5 rounded-full bg-slate-100 text-[9px] uppercase font-black tracking-[0.2em] text-[#6366F1] border border-slate-200">{group?.category}</span>
               </div>
-              <p className="text-slate-500 text-xl font-medium max-w-xl">{group?.description || "High-performance synchronization for your shared ecosystem."}</p>
+              <p className="text-slate-500 text-xl font-medium max-w-xl">{group?.description || "Track and settle shared expenses with your group."}</p>
             </div>
           </motion.div>
           
@@ -172,7 +172,7 @@ const GroupDetail = () => {
                onClick={() => setIsAddExpenseOpen(true)}
                className="btn-primary"
              >
-               + INITIALZE ENTRY
+               + ADD EXPENSE
              </button>
           </motion.div>
         </div>
@@ -194,7 +194,7 @@ const GroupDetail = () => {
                <div className="glass-card mb-12 bg-white/40">
                   <div className="flex items-center gap-3 mb-8 p-10 pb-0">
                      <div className="w-2 h-2 rounded-full bg-[#6366F1]" />
-                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Cognitive Intelligence</span>
+                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Analytics & Insights</span>
                   </div>
                   <Analytics expenses={getExpenses.data} />
                </div>
@@ -209,7 +209,7 @@ const GroupDetail = () => {
               <div className="flex items-center justify-between border-b border-slate-100 pb-6">
                 <h2 className="text-2xl font-bold tracking-tight text-[#0F172A] uppercase flex items-center gap-4">
                   <Receipt className="text-[#6366F1]" size={24} />
-                  Operational Log
+                  Expense Log
                 </h2>
                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{getExpenses.data?.length || 0} Records</span>
               </div>
@@ -220,7 +220,7 @@ const GroupDetail = () => {
                  </div>
               ) : getExpenses.data?.length === 0 ? (
                  <motion.div variants={itemVariants} className="glass-card text-center py-24 border-dashed border-slate-200 bg-slate-50/50">
-                    <p className="text-slate-400 font-bold text-lg tracking-tight">No data detected in current node.</p>
+                    <p className="text-slate-400 font-bold text-lg tracking-tight">No expenses recorded yet.</p>
                  </motion.div>
               ) : (
                  <div className="space-y-6">
@@ -247,8 +247,8 @@ const GroupDetail = () => {
                                     new Date(expense.due_date) < new Date() ? 'text-[#EC4899]' : 'text-slate-400'
                                   }`}>
                                     <Clock size={11} />
-                                    DEADLINE: {new Date(expense.due_date).toLocaleDateString()}
-                                    {new Date(expense.due_date) < new Date() && <span className="bg-[#EC4899]/10 px-2 py-0.5 rounded-full text-[#EC4899]">System Overdue</span>}
+                                    DUE DATE: {new Date(expense.due_date).toLocaleDateString()}
+                                    {new Date(expense.due_date) < new Date() && <span className="bg-[#EC4899]/10 px-2 py-0.5 rounded-full text-[#EC4899]">Overdue</span>}
                                   </div>
                                 )}
                             </div>
@@ -267,7 +267,7 @@ const GroupDetail = () => {
                                    }
                                  }}
                                  className="w-10 h-10 flex items-center justify-center rounded-full bg-slate-50 text-slate-400 hover:bg-[#6366F1] hover:text-white hover:scale-110 transition-all border border-slate-100 group/nudge"
-                                 title="Nudge Debtors"
+                                 title="Send Reminder"
                                >
                                  <Bell size={16} className="group-hover/nudge:animate-shake" />
                                </button>
@@ -287,7 +287,7 @@ const GroupDetail = () => {
             <div className="space-y-10">
                <div className="flex items-center gap-4 border-b border-slate-100 pb-6">
                   <Wallet className="text-[#84CC16]" size={24} />
-                  <h2 className="text-2xl font-bold tracking-tight text-[#0F172A] uppercase">Synchronization History</h2>
+                  <h2 className="text-2xl font-bold tracking-tight text-[#0F172A] uppercase">Settlement History</h2>
                </div>
                <div className="space-y-4">
                   {group?.settlements?.length === 0 || !group?.settlements ? (
@@ -338,9 +338,9 @@ const GroupDetail = () => {
                <div className="bg-[#0F172A] p-10 text-white">
                   <div className="flex items-center gap-4 mb-2">
                      <Wallet size={20} className="text-[#6366F1]" />
-                     <h3 className="font-bold text-sm uppercase tracking-[0.2em]">Cognitive Balances</h3>
+                     <h3 className="font-bold text-sm uppercase tracking-[0.2em]">Member Balances</h3>
                   </div>
-                  <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.1em]">Network Node Status</p>
+                  <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.1em]">Current Balances</p>
                </div>
                
                <div className="p-4 space-y-1">
@@ -409,7 +409,7 @@ const GroupDetail = () => {
             </motion.div>
 
             <motion.div variants={itemVariants} className="glass-card bg-[#F8FAFC] border-slate-200 shadow-sm p-10">
-               <span className="text-[9px] font-black text-[#6366F1] uppercase tracking-[0.4em] mb-4 block">Network Access</span>
+               <span className="text-[9px] font-black text-[#6366F1] uppercase tracking-[0.4em] mb-4 block">Group Access</span>
                <h3 className="font-bold text-2xl text-[#0F172A] mb-6 tracking-tight">Invite Code</h3>
                <div
                  className={`bg-white border-2 p-5 rounded-2xl flex items-center justify-between cursor-pointer transition-all ${

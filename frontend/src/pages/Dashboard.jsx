@@ -36,7 +36,7 @@ const Dashboard = () => {
 
   return (
     <Layout>
-      <motion.div 
+      <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -47,25 +47,25 @@ const Dashboard = () => {
 
         <header className="flex flex-col gap-4">
           <motion.div variants={itemVariants} className="flex items-center gap-3">
-             <div className="w-10 h-1 bg-[#6366F1] rounded-full" />
-             <span className="text-[10px] font-black text-[#6366F1] uppercase tracking-[0.4em]">Personal Analytics</span>
+            <div className="w-10 h-1 bg-[#6366F1] rounded-full" />
+            <span className="text-[10px] font-black text-[#6366F1] uppercase tracking-[0.4em]">Summary Insights</span>
           </motion.div>
           <motion.h1 variants={itemVariants} className="text-7xl font-bold tracking-[-0.05em] text-[#0F172A] leading-[1] max-w-4xl">
-            ORCHESTRATE YOUR <span className="text-slate-400 font-light">FINANCIAL FLOW.</span>
+            MANAGE YOUR <span className="text-slate-400 font-light">EXPENSES.</span>
           </motion.h1>
           <motion.p variants={itemVariants} className="text-slate-500 text-xl font-medium max-w-2xl mt-4">
-            High-performance tracking for your shared expenses and circle synchronization.
+            Easily track shared expenses and settle balances with your friends.
           </motion.p>
         </header>
 
         {/* Summary HUD */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-6">
           {[
-            { label: 'Owed to Circle', value: mockSummary.oweToMe, color: '#0F172A', accent: '#6366F1' },
-            { label: 'Your Debt', value: mockSummary.iOwe, color: '#0F172A', accent: '#EC4899' },
-            { label: 'Cognitive Balance', value: mockSummary.net, color: '#0F172A', accent: '#84CC16' }
+            { label: 'Owed to You', value: mockSummary.oweToMe, color: '#0F172A', accent: '#6366F1' },
+            { label: 'You Owe', value: mockSummary.iOwe, color: '#0F172A', accent: '#EC4899' },
+            { label: 'Total Balance', value: mockSummary.net, color: '#0F172A', accent: '#84CC16' }
           ].map((card, i) => (
-            <motion.div 
+            <motion.div
               key={i}
               variants={itemVariants}
               whileHover={{ y: -5 }}
@@ -78,12 +78,12 @@ const Dashboard = () => {
               <div className="space-y-1">
                 <div className="text-5xl font-bold tracking-tighter" style={{ color: card.color }}>₹{card.value.toLocaleString()}</div>
                 <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden mt-6">
-                   <motion.div 
-                     initial={{ width: 0 }}
-                     animate={{ width: '60%' }}
-                     className="h-full" 
-                     style={{ backgroundColor: card.accent }} 
-                   />
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: '60%' }}
+                    className="h-full"
+                    style={{ backgroundColor: card.accent }}
+                  />
                 </div>
               </div>
             </motion.div>
@@ -94,21 +94,21 @@ const Dashboard = () => {
         <section className="space-y-12">
           <div className="flex flex-col sm:flex-row items-baseline justify-between gap-6 border-b border-slate-200 pb-8">
             <div className="flex items-center gap-6">
-               <h2 className="text-3xl font-bold tracking-tight text-[#0F172A]">OPERATIONAL CIRCLES</h2>
-               <span className="px-3 py-1 rounded-full bg-slate-100 text-[10px] font-black text-slate-500 tracking-widest">{getGroups.data?.length || 0} ACTIVE</span>
+              <h2 className="text-3xl font-bold tracking-tight text-[#0F172A]">YOUR EXPENSE GROUPS</h2>
+              <span className="px-3 py-1 rounded-full bg-slate-100 text-[10px] font-black text-slate-500 tracking-widest">{getGroups.data?.length || 0} ACTIVE</span>
             </div>
             <div className="flex gap-4 w-full sm:w-auto">
-              <button 
+              <button
                 onClick={() => setIsJoinModalOpen(true)}
                 className="btn-secondary"
               >
-                SYNC CODE
+                JOIN GROUP
               </button>
-              <button 
+              <button
                 onClick={() => setIsCreateModalOpen(true)}
                 className="btn-primary"
               >
-                + EXPAND NETWORK
+                + CREATE GROUP
               </button>
             </div>
           </div>
@@ -119,14 +119,14 @@ const Dashboard = () => {
             </div>
           ) : getGroups.data?.length === 0 ? (
             <motion.div variants={itemVariants} className="glass-card text-center py-32 bg-slate-50/50 border-dashed">
-              <div className="text-slate-400 text-xl font-bold mb-10 tracking-tight">System ready. No active circles detected.</div>
-              <button onClick={() => setIsCreateModalOpen(true)} className="btn-primary">Initialize Circle</button>
+              <div className="text-slate-400 text-xl font-bold mb-10 tracking-tight">Got no groups yet! Create one.</div>
+              <button onClick={() => setIsCreateModalOpen(true)} className="btn-primary">Create Group</button>
             </motion.div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {getGroups.data?.map(group => (
-                <motion.div 
-                  key={group.id} 
+                <motion.div
+                  key={group.id}
                   variants={itemVariants}
                   whileHover={{ y: -8 }}
                   onClick={() => navigate(`/groups/${group.id}`)}
@@ -137,23 +137,23 @@ const Dashboard = () => {
                       {group.name[0]}
                     </div>
                     <div className="flex flex-col items-end">
-                       <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Sector</span>
-                       <span className="text-[11px] font-black text-[#6366F1] uppercase tracking-widest">{group.category}</span>
+                      <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Sector</span>
+                      <span className="text-[11px] font-black text-[#6366F1] uppercase tracking-widest">{group.category}</span>
                     </div>
                   </div>
-                  
+
                   <h3 className="font-bold text-2xl mb-4 text-[#0F172A] group-hover:tracking-tight transition-all">{group.name}</h3>
                   <p className="text-slate-500 text-sm font-medium line-clamp-2 mb-10 leading-relaxed">{group.description || "High-performance synchronization for your shared ecosystem."}</p>
-                  
+
                   <div className="flex items-center justify-between pt-6 border-t border-slate-100">
                     <div className="flex items-center gap-2">
-                       <div className="flex -space-x-2">
-                          {[1,2,3].map(i => <div key={i} className="w-6 h-6 rounded-full bg-slate-200 border-2 border-white" />)}
-                       </div>
-                       <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">{group.members_count} Nodes</span>
+                      <div className="flex -space-x-2">
+                        {[1, 2, 3].map(i => <div key={i} className="w-6 h-6 rounded-full bg-slate-200 border-2 border-white" />)}
+                      </div>
+                      <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">{group.members_count} Nodes</span>
                     </div>
                     <div className="text-[9px] font-black text-slate-300 uppercase tracking-widest">
-                       ACTV / {new Date(group.created_at).toLocaleDateString(undefined, { month: 'short', year: 'numeric' })}
+                      ACTV / {new Date(group.created_at).toLocaleDateString(undefined, { month: 'short', year: 'numeric' })}
                     </div>
                   </div>
                 </motion.div>

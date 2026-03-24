@@ -58,7 +58,7 @@ const CreateGroupModal = ({ isOpen, onClose }) => {
             className="glass-card w-full max-w-xl bg-white/90 p-0 overflow-hidden shadow-[0_32px_64px_rgba(15,23,42,0.15)] relative border-slate-200"
           >
             <div className="p-8 border-b border-slate-100 flex items-center justify-between">
-              <h2 className="text-xl font-bold text-[#0F172A] tracking-tight uppercase">Orchestrate New Sector</h2>
+              <h2 className="text-xl font-bold text-[#0F172A] tracking-tight uppercase">Create New Group</h2>
               <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-400 hover:text-[#0F172A] transition-all">
                 <X size={18} />
               </button>
@@ -68,10 +68,10 @@ const CreateGroupModal = ({ isOpen, onClose }) => {
               <form onSubmit={handleSubmit} className="space-y-10">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-3">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] ml-6">Sector Designation</label>
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] ml-6">Group Name</label>
                     <input 
                       type="text" 
-                      placeholder="e.g., GLOBAL_PROJECT_24" 
+                      placeholder="e.g., Goa Trip 2024" 
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       className="input-field w-full h-14 bg-white/60 rounded-full px-8"
@@ -80,25 +80,25 @@ const CreateGroupModal = ({ isOpen, onClose }) => {
                   </div>
                   
                   <div className="space-y-3">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] ml-6">Infrastructure Type</label>
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] ml-6">Category</label>
                     <select 
                       value={category}
                       onChange={(e) => setCategory(e.target.value)}
                       className="input-field w-full h-14 bg-white/60 rounded-full px-8 appearance-none cursor-pointer"
                     >
-                      <option value="trip">EXPEDITION</option>
-                      <option value="home">CORE_DOMICILE</option>
-                      <option value="office">HEADQUARTERS</option>
-                      <option value="friends">NETWORK_SOCIAL</option>
-                      <option value="other">STAGED_UTILITY</option>
+                      <option value="trip">TRIP</option>
+                      <option value="home">HOME</option>
+                      <option value="office">OFFICE</option>
+                      <option value="friends">FRIENDS</option>
+                      <option value="other">OTHER</option>
                     </select>
                   </div>
                 </div>
 
                 <div className="space-y-3">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] ml-6">Network Description</label>
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] ml-6">Description</label>
                   <textarea 
-                    placeholder="Define the scope of this sector..."
+                    placeholder="What is this group for? (optional)"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     className="input-field w-full py-6 bg-white/60 rounded-3xl px-8 min-h-[120px]"
@@ -106,11 +106,11 @@ const CreateGroupModal = ({ isOpen, onClose }) => {
                 </div>
 
                 <div className="space-y-4">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] ml-6">Initialize Nodes (Username)</label>
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] ml-6">Add Members (Username)</label>
                   <div className="flex gap-3">
                     <input 
                       type="text" 
-                      placeholder="SCAN_IDENTIFIER" 
+                      placeholder="Enter username" 
                       value={memberInput}
                       onChange={(e) => setMemberInput(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addMember())}
@@ -154,7 +154,7 @@ const CreateGroupModal = ({ isOpen, onClose }) => {
                   disabled={createGroup.isPending}
                   className="btn-primary w-full mt-6"
                 >
-                  {createGroup.isPending ? 'INITIALIZING SECTOR...' : 'ESTABLISH SECTOR'}
+                  {createGroup.isPending ? 'CREATING GROUP...' : 'CREATE GROUP'}
                 </button>
               </form>
             </div>
