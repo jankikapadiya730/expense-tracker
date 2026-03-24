@@ -42,6 +42,9 @@ const Dashboard = () => {
         animate="visible"
         className="space-y-16"
       >
+        <CreateGroupModal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} />
+        <JoinGroupModal isOpen={isJoinModalOpen} onClose={() => setIsJoinModalOpen(false)} />
+
         <header className="flex flex-col gap-4">
           <motion.div variants={itemVariants} className="flex items-center gap-3">
              <div className="w-10 h-1 bg-[#6366F1] rounded-full" />
