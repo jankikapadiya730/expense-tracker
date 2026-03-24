@@ -49,85 +49,99 @@ const CreateGroupModal = ({ isOpen, onClose }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            className="absolute inset-0 bg-[#0F172A]/40 backdrop-blur-[8px]"
           />
           <motion.div 
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="glass-card w-full max-w-lg bg-[#161B22] p-0 overflow-hidden shadow-2xl relative"
+            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+            className="glass-card w-full max-w-xl bg-white/90 p-0 overflow-hidden shadow-[0_32px_64px_rgba(15,23,42,0.15)] relative border-slate-200"
           >
-            <div className="p-6 border-b border-gray-800 flex items-center justify-between bg-gray-900/50">
-              <h2 className="text-xl font-black">Create New Circle</h2>
-              <button onClick={onClose} className="p-2 hover:bg-gray-800 rounded-full transition-colors text-gray-400 hover:text-white">
-                <X size={20} />
+            <div className="p-8 border-b border-slate-100 flex items-center justify-between">
+              <h2 className="text-xl font-bold text-[#0F172A] tracking-tight uppercase">Orchestrate New Sector</h2>
+              <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-400 hover:text-[#0F172A] transition-all">
+                <X size={18} />
               </button>
             </div>
 
-            <div className="max-h-[70vh] overflow-y-auto custom-scrollbar">
-              <form onSubmit={handleSubmit} className="p-6 space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2 block">Group Name</label>
+            <div className="max-h-[70vh] overflow-y-auto custom-scrollbar p-8">
+              <form onSubmit={handleSubmit} className="space-y-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] ml-6">Sector Designation</label>
                     <input 
                       type="text" 
-                      placeholder="e.g., Goa Trip 2024" 
+                      placeholder="e.g., GLOBAL_PROJECT_24" 
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="input-field w-full text-lg"
+                      className="input-field w-full h-14 bg-white/60 rounded-full px-8"
                       required
                     />
                   </div>
                   
-                  <div>
-                    <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2 block">Category</label>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] ml-6">Infrastructure Type</label>
                     <select 
                       value={category}
                       onChange={(e) => setCategory(e.target.value)}
-                      className="input-field w-full"
+                      className="input-field w-full h-14 bg-white/60 rounded-full px-8 appearance-none cursor-pointer"
                     >
-                      <option value="trip">Trip</option>
-                      <option value="home">Home</option>
-                      <option value="office">Office</option>
-                      <option value="friends">Friends</option>
-                      <option value="other">Other</option>
+                      <option value="trip">EXPEDITION</option>
+                      <option value="home">CORE_DOMICILE</option>
+                      <option value="office">HEADQUARTERS</option>
+                      <option value="friends">NETWORK_SOCIAL</option>
+                      <option value="other">STAGED_UTILITY</option>
                     </select>
                   </div>
                 </div>
 
-                <div>
-                  <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2 block">Invite Friends (Username)</label>
-                  <div className="flex gap-2">
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] ml-6">Network Description</label>
+                  <textarea 
+                    placeholder="Define the scope of this sector..."
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    className="input-field w-full py-6 bg-white/60 rounded-3xl px-8 min-h-[120px]"
+                  />
+                </div>
+
+                <div className="space-y-4">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] ml-6">Initialize Nodes (Username)</label>
+                  <div className="flex gap-3">
                     <input 
                       type="text" 
-                      placeholder="Enter username..." 
+                      placeholder="SCAN_IDENTIFIER" 
                       value={memberInput}
                       onChange={(e) => setMemberInput(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addMember())}
-                      className="input-field flex-1"
+                      className="input-field flex-1 h-14 bg-white/60 rounded-full px-8"
                     />
                     <button 
                       type="button" 
                       onClick={addMember}
-                      className="btn-secondary px-4 flex items-center justify-center"
+                      className="w-14 h-14 rounded-full bg-[#0F172A] text-white flex items-center justify-center hover:bg-[#6366F1] transition-all shadow-lg"
                     >
                       <UserPlus size={20} />
                     </button>
                   </div>
                   
-                  <div className="flex flex-wrap gap-2 mt-4">
+                  <div className="flex flex-wrap gap-3 mt-6">
                     <AnimatePresence>
-                      {initialMembers.map(username => (
+                      {initialMembers.map(member => (
                         <motion.span 
-                          key={username}
+                          key={member}
                           initial={{ scale: 0.8, opacity: 0 }}
                           animate={{ scale: 1, opacity: 1 }}
                           exit={{ scale: 0.8, opacity: 0 }}
-                          className="bg-gray-800 border border-gray-700 px-3 py-1.5 rounded-xl flex items-center gap-2 text-sm font-bold"
+                          className="pl-4 pr-1 py-1 rounded-full bg-slate-100 border border-slate-200 text-[10px] font-black text-[#0F172A] flex items-center gap-2 uppercase tracking-widest"
                         >
-                          {username}
-                          <button onClick={() => removeMember(username)} className="text-gray-500 hover:text-[#F43F5E] transition-colors">
-                            <X size={14} />
+                          {member}
+                          <button 
+                            type="button"
+                            onClick={() => removeMember(member)}
+                            className="w-6 h-6 rounded-full hover:bg-red-50 text-slate-300 hover:text-red-500 transition-all flex items-center justify-center"
+                          >
+                            <Trash2 size={12} />
                           </button>
                         </motion.span>
                       ))}
@@ -135,22 +149,12 @@ const CreateGroupModal = ({ isOpen, onClose }) => {
                   </div>
                 </div>
 
-                <div>
-                  <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2 block">Description (Optional)</label>
-                  <textarea 
-                    placeholder="What is this group for?" 
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    className="input-field w-full h-24 resize-none leading-relaxed"
-                  />
-                </div>
-
                 <button 
                   type="submit" 
                   disabled={createGroup.isPending}
-                  className="w-full btn-primary py-4 rounded-xl font-black uppercase tracking-widest shadow-xl shadow-[#7C3AED]/30 disabled:opacity-50 transition-all active:scale-[0.98]"
+                  className="btn-primary w-full mt-6"
                 >
-                  {createGroup.isPending ? 'Creating...' : 'Create Circle'}
+                  {createGroup.isPending ? 'INITIALIZING SECTOR...' : 'ESTABLISH SECTOR'}
                 </button>
               </form>
             </div>

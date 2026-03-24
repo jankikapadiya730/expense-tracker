@@ -34,53 +34,52 @@ const Navbar = () => {
   if (!user) return null;
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 h-20 z-50 transition-all duration-300 ${scrolled ? 'bg-[#0D1117]/80 backdrop-blur-xl border-b border-gray-800 shadow-2xl' : 'bg-transparent'}`}>
-      <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3 group">
-          <motion.div 
-            whileHover={{ rotate: 15 }}
-            className="w-10 h-10 bg-[#7C3AED] rounded-xl flex items-center justify-center font-black text-xl text-white shadow-xl shadow-[#7C3AED]/30"
-          >
-            S
-          </motion.div>
-          <span className={`font-black text-2xl tracking-tighter hidden sm:block transition-all ${scrolled ? 'scale-95' : 'scale-100'}`}>SplitSphere</span>
+    <nav className={`fixed top-0 left-0 right-0 h-24 z-50 transition-all duration-500 ${scrolled ? 'bg-white/80 backdrop-blur-[32px] border-b border-slate-200/50 shadow-[0_16px_40px_rgba(15,23,42,0.03)]' : 'bg-transparent'}`}>
+      <div className="max-w-7xl mx-auto px-8 h-full flex items-center justify-between">
+        <Link to="/" className="flex items-center gap-4 group">
+            <motion.div 
+               whileHover={{ scale: 1.05 }}
+               className="w-10 h-10 bg-[#0F172A] rounded-full flex items-center justify-center text-white shadow-[0_8px_16px_rgba(15,23,42,0.1)] relative"
+            >
+              <div className="absolute inset-0 bg-white/10 rounded-full animate-ping opacity-20" />
+              <span className="font-black text-lg">S</span>
+            </motion.div>
+            <span className="text-xl font-black tracking-tighter text-slate-900 group-hover:tracking-normal transition-all duration-500 uppercase">
+              Split<span className="text-slate-400 group-hover:text-[#6366F1]">Sphere</span>
+            </span>
         </Link>
         
-        <div className="flex items-center gap-4">
-          <button className="relative p-3 text-gray-400 hover:text-white hover:bg-gray-800/50 rounded-2xl transition-all">
-            <Bell size={22} />
+        <div className="flex items-center gap-6">
+          <button className="relative p-2.5 text-slate-400 hover:text-[#0F172A] transition-colors rounded-full hover:bg-slate-100">
+            <Bell size={20} />
             <AnimatePresence>
               {unreadCount > 0 && (
                 <motion.span 
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   exit={{ scale: 0 }}
-                  className="absolute top-2 right-2 w-5 h-5 bg-[#F43F5E] text-white text-[10px] font-black flex items-center justify-center rounded-full ring-4 ring-[#0D1117]"
+                  className="absolute top-2 right-2 w-2.5 h-2.5 bg-[#6366F1] border-2 border-white rounded-full"
                 >
-                  {unreadCount}
                 </motion.span>
               )}
             </AnimatePresence>
           </button>
 
-          <div className="flex items-center gap-4 pl-6 border-l border-gray-800">
-            <div className="text-right hidden sm:block">
-              <p className="text-sm font-black leading-none">{user.username}</p>
-              <p className="text-[10px] text-[#7C3AED] uppercase font-black tracking-widest mt-1.5 opacity-80">{user.preferred_currency || 'INR'}</p>
+          <div className="h-8 w-px bg-slate-200 hidden sm:block mx-1"></div>
+
+          <div className="flex items-center gap-4 bg-slate-100/50 p-1.5 pr-5 rounded-full border border-slate-200 group/user cursor-pointer hover:bg-white hover:shadow-lg hover:shadow-slate-200/50 transition-all">
+            <div className="w-9 h-9 bg-[#0F172A] rounded-full flex items-center justify-center text-white text-sm font-black shadow-sm group-hover/user:scale-105 transition-transform">
+              {user?.username[0].toUpperCase()}
             </div>
-            <motion.div 
-              whileHover={{ scale: 1.05 }}
-              className="w-11 h-11 rounded-2xl bg-gray-800 border-2 border-gray-700 flex items-center justify-center text-[#7C3AED] font-black shadow-inner"
-            >
-              {user.username[0].toUpperCase()}
-            </motion.div>
-            <button 
-              onClick={handleLogout}
-              className="p-3 text-gray-500 hover:text-[#F43F5E] hover:bg-[#F43F5E]/10 rounded-2xl transition-all"
-              title="Logout"
-            >
-              <LogOut size={22} />
-            </button>
+            <div className="hidden sm:block">
+              <p className="text-[10px] font-black text-slate-900 uppercase tracking-widest leading-none mb-1">{user?.first_name || user?.username}</p>
+              <button 
+                onClick={handleLogout}
+                className="text-[9px] font-black text-[#6366F1] hover:text-[#0F172A] uppercase tracking-[0.2em] transition-colors outline-none"
+              >
+                Logout
+              </button>
+            </div>
           </div>
         </div>
       </div>

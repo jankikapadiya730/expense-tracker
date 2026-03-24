@@ -15,28 +15,36 @@ const Layout = ({ children }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0D1117] text-white selection:bg-[#7C3AED]/30">
+    <div className="min-h-screen selection:bg-[#7C3AED]/10 transition-colors duration-500">
       <Navbar />
-      <main className="max-w-7xl mx-auto px-4 pt-24 pb-32">
+      <main className="max-w-7xl mx-auto px-6 pt-24 pb-32">
         {children}
       </main>
 
       {/* Bottom Navigation for Mobile */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-[#0D1117]/80 backdrop-blur-xl border-t border-gray-800 sm:hidden z-50">
-        <div className="flex items-center justify-around h-20 px-2 relative">
-           {navItems.map((item, idx) => (
-             <Link 
-               key={idx} 
-               to={item.path} 
-               className={`flex flex-col items-center justify-center gap-1 transition-all ${item.primary ? 'p-4 bg-[#7C3AED] rounded-full -translate-y-8 shadow-xl shadow-[#7C3AED]/40' : location.pathname === item.path ? 'text-[#7C3AED]' : 'text-gray-500'}`}
-             >
-               {item.icon}
-               {!item.primary && <span className="text-[10px] font-bold uppercase tracking-tighter">{item.label}</span>}
-             </Link>
-           ))}
+      <nav className="fixed bottom-0 left-0 right-0 bg-white/60 backdrop-blur-3xl border-t border-white/50 sm:hidden z-50">
+        <div className="flex items-center justify-around h-24 px-4 relative">
+            <Link to="/" className={`flex-1 flex flex-col items-center gap-1.5 transition-all ${location.pathname === '/' ? 'text-[#0F172A]' : 'text-slate-400'}`}>
+              <div className={`p-2.5 rounded-full transition-all ${location.pathname === '/' ? 'bg-slate-100' : 'bg-transparent'}`}>
+                <Home size={22} className={location.pathname === '/' ? 'fill-[#0F172A]' : ''} />
+              </div>
+            </Link>
+            
+            <button className="flex-1 flex justify-center -mt-10">
+              <div className="w-16 h-16 bg-[#0F172A] rounded-full flex items-center justify-center text-white shadow-[0_12px_24px_rgba(15,23,42,0.25)] hover:scale-110 active:scale-95 transition-all group">
+                <Plus size={28} className="group-hover:rotate-90 transition-transform duration-500" />
+              </div>
+            </button>
+
+            <Link to="/groups" className={`flex-1 flex flex-col items-center gap-1.5 transition-all ${location.pathname.startsWith('/groups') ? 'text-[#0F172A]' : 'text-slate-400'}`}>
+              <div className={`p-2.5 rounded-full transition-all ${location.pathname.startsWith('/groups') ? 'bg-slate-100' : 'bg-transparent'}`}>
+                <Users size={22} className={location.pathname.startsWith('/groups') ? 'fill-[#0F172A]' : ''} />
+              </div>
+            </Link>
         </div>
       </nav>
     </div>
+
   );
 };
 

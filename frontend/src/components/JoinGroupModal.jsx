@@ -26,43 +26,43 @@ const JoinGroupModal = ({ isOpen, onClose }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            className="absolute inset-0 bg-[#0F172A]/40 backdrop-blur-[8px]"
           />
           <motion.div 
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="glass-card w-full max-w-sm bg-[#161B22] p-0 overflow-hidden shadow-2xl relative"
+            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+            className="glass-card w-full max-w-sm bg-white/90 p-0 overflow-hidden shadow-[0_32px_64px_rgba(15,23,42,0.15)] relative border-slate-200"
           >
-            <div className="p-6 border-b border-gray-800 flex items-center justify-between bg-gray-900/50">
-              <h2 className="text-xl font-black">Join a Group</h2>
-              <button onClick={onClose} className="p-2 hover:bg-gray-800 rounded-full transition-colors text-gray-400 hover:text-white">
-                <X size={20} />
+            <div className="p-8 border-b border-slate-100 flex items-center justify-between">
+              <h2 className="text-xl font-bold text-[#0F172A] tracking-tight uppercase">Network Access</h2>
+              <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-400 hover:text-[#0F172A] transition-all">
+                <X size={18} />
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-6 space-y-6">
-              <div className="space-y-4">
+            <form onSubmit={handleSubmit} className="p-8 space-y-10">
+              <div className="space-y-6">
                 <div>
-                  <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2 block text-center">Enter Invite Code</label>
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-4 block text-center">Sync Code Required</label>
                   <input 
                     type="text" 
-                    placeholder="ABCD1234" 
+                    placeholder="ALPHA-SYNC-0" 
                     value={inviteCode}
                     onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
-                    className="input-field w-full text-center font-black tracking-widest text-2xl h-16 uppercase"
+                    className="input-field w-full text-center font-bold tracking-[0.4em] text-2xl h-16 uppercase bg-slate-50/50 rounded-full border-slate-200"
                     required
                   />
-                  <p className="text-[10px] text-gray-500 mt-4 text-center leading-relaxed font-medium">Ask your friend for the unique invite code found in their group detail sidebar.</p>
+                  <p className="text-[9px] text-slate-400 mt-6 text-center leading-relaxed font-black uppercase tracking-widest px-4">Secure node established on authorization.</p>
                 </div>
               </div>
 
               <button 
                 type="submit" 
                 disabled={joinGroup.isPending}
-                className="w-full btn-primary py-4 rounded-xl font-black uppercase tracking-widest shadow-xl shadow-[#7C3AED]/30 disabled:opacity-50 transition-all active:scale-[0.98]"
+                className="btn-primary w-full"
               >
-                {joinGroup.isPending ? 'Joining...' : 'Join Group'}
+                {joinGroup.isPending ? 'SYNCHRONIZING...' : 'AUTHORIZE JOIN'}
               </button>
             </form>
           </motion.div>

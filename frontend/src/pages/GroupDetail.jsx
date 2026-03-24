@@ -118,58 +118,60 @@ const GroupDetail = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="space-y-8"
+        className="space-y-12"
       >
         <motion.div variants={itemVariants}>
-          <Link to="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-white mb-6 group transition-colors">
-            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-            <span className="text-sm font-bold uppercase tracking-widest">Back to Dashboard</span>
+          <Link to="/" className="inline-flex items-center gap-3 text-slate-400 hover:text-[#0F172A] mb-8 group transition-all">
+            <ArrowLeft size={16} className="group-hover:-translate-x-1.5 transition-transform" />
+            <span className="text-[10px] font-black uppercase tracking-[0.3em]">Operational Core</span>
           </Link>
         </motion.div>
 
-        {/* Group Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
-          <motion.div variants={itemVariants} className="flex items-center gap-6">
-            <div className="w-20 h-20 bg-gray-800 border-2 border-[#7C3AED]/30 rounded-3xl flex items-center justify-center text-3xl font-black text-[#7C3AED] shadow-2xl shadow-[#7C3AED]/10">
-              {group?.name ? group.name[0] : 'G'}
+        {/* HUD Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-10 border-b border-slate-200 pb-12">
+          <motion.div variants={itemVariants} className="flex items-center gap-10">
+            <div className="w-24 h-24 bg-[#0F172A] rounded-full flex items-center justify-center text-4xl font-black text-white shadow-[0_24px_48px_rgba(15,23,42,0.15)] relative overflow-hidden">
+               <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
+               {group?.name ? group.name[0] : 'G'}
             </div>
-            <div>
-              <div className="flex items-center gap-3">
-                 <h1 className="text-4xl font-black tracking-tight">{group?.name}</h1>
-                 <span className="px-3 py-1 rounded-full bg-gray-800 text-[10px] uppercase font-black tracking-widest text-[#7C3AED] border border-gray-700">{group?.category}</span>
+            <div className="space-y-4">
+              <div className="flex items-center gap-6">
+                 <h1 className="text-6xl font-bold tracking-[-0.05em] text-[#0F172A] leading-none uppercase">{group?.name}</h1>
+                 <span className="px-4 py-1.5 rounded-full bg-slate-100 text-[9px] uppercase font-black tracking-[0.2em] text-[#6366F1] border border-slate-200">{group?.category} / SECTOR</span>
               </div>
-              <p className="text-gray-500 mt-2 text-lg font-medium">{group?.description || "Shared financial hub for your circle."}</p>
+              <p className="text-slate-500 text-xl font-medium max-w-xl">{group?.description || "High-performance synchronization for your shared ecosystem."}</p>
             </div>
           </motion.div>
           
           <motion.div variants={itemVariants} className="flex flex-wrap gap-3">
-             <button 
-               onClick={() => window.open(`http://localhost:8000/api/reports/group/${id}/pdf/`, '_blank')}
-               className="btn-secondary p-4 rounded-xl"
-               title="Export PDF"
-             >
-               <FileText size={20} />
-             </button>
-             <button 
-               onClick={() => window.open(`http://localhost:8000/api/reports/group/${id}/excel/`, '_blank')}
-               className="btn-secondary p-4 rounded-xl"
-               title="Export Excel"
-             >
-               <Table size={20} />
-             </button>
+             <div className="flex gap-2 bg-white/50 p-2 rounded-full border border-slate-200">
+                <button 
+                  onClick={() => window.open(`http://localhost:8000/api/reports/group/${id}/pdf/`, '_blank')}
+                  className="w-12 h-12 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-400 hover:text-[#0F172A] transition-all"
+                  title="Export PDF"
+                >
+                  <FileText size={20} />
+                </button>
+                <button 
+                  onClick={() => window.open(`http://localhost:8000/api/reports/group/${id}/excel/`, '_blank')}
+                  className="w-12 h-12 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-400 hover:text-[#0F172A] transition-all"
+                  title="Export Excel"
+                >
+                  <Table size={20} />
+                </button>
+             </div>
              <button 
                onClick={() => setShowAnalytics(!showAnalytics)}
-               className={`btn-secondary p-4 rounded-xl transition-all ${showAnalytics ? 'bg-[#7C3AED] text-white' : 'hover:border-[#7C3AED]/50'}`}
+               className={`w-12 h-12 flex items-center justify-center rounded-full transition-all border ${showAnalytics ? 'bg-[#0F172A] text-white border-[#0F172A] shadow-lg shadow-[#0F172A]/20' : 'bg-white/50 border-slate-200 text-slate-400 hover:text-[#0F172A]'}`}
                title="Visual Analytics"
              >
-               <TrendingUp size={20} />
+               <BarChart3 size={20} />
              </button>
              <button 
                onClick={() => setIsAddExpenseOpen(true)}
-               className="btn-primary flex items-center gap-3 px-6 py-4 rounded-xl font-black uppercase tracking-widest shadow-xl shadow-[#7C3AED]/30 hover:scale-105 active:scale-95 transition-all"
+               className="btn-primary"
              >
-               <Plus size={20} />
-               Add Expense
+               + INITIALZE ENTRY
              </button>
           </motion.div>
         </div>
@@ -183,63 +185,74 @@ const GroupDetail = () => {
         <AnimatePresence>
           {showAnalytics && (
              <motion.div 
-               initial={{ opacity: 0, height: 0 }}
-               animate={{ opacity: 1, height: 'auto' }}
-               exit={{ opacity: 0, height: 0 }}
+               initial={{ opacity: 0, y: -20 }}
+               animate={{ opacity: 1, y: 0 }}
+               exit={{ opacity: 0, y: -20 }}
                className="overflow-hidden"
              >
-               <Analytics expenses={getExpenses.data} />
+               <div className="glass-card mb-12 bg-white/40">
+                  <div className="flex items-center gap-3 mb-8 p-10 pb-0">
+                     <div className="w-2 h-2 rounded-full bg-[#6366F1]" />
+                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Cognitive Intelligence</span>
+                  </div>
+                  <Analytics expenses={getExpenses.data} />
+               </div>
              </motion.div>
           )}
         </AnimatePresence>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 pt-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 pt-4">
           {/* Main Feed */}
-          <div className="lg:col-span-2 space-y-12">
-            <div className="space-y-6">
-              <h2 className="text-2xl font-black tracking-tight flex items-center gap-3">
-                <Receipt className="text-[#7C3AED]" />
-                Expense Feed
-              </h2>
+          <div className="lg:col-span-2 space-y-20">
+            <div className="space-y-10">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-6">
+                <h2 className="text-2xl font-bold tracking-tight text-[#0F172A] uppercase flex items-center gap-4">
+                  <Receipt className="text-[#6366F1]" size={24} />
+                  Operational Log
+                </h2>
+                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{getExpenses.data?.length || 0} Records</span>
+              </div>
               
               {getExpenses.isLoading ? (
-                 <div className="space-y-4">
-                   {[1, 2, 3].map(i => <div key={i} className="glass-card h-24 animate-pulse bg-gray-800/50"></div>)}
+                 <div className="space-y-6">
+                   {[1, 2, 3].map(i => <div key={i} className="glass-card h-32 animate-pulse"></div>)}
                  </div>
               ) : getExpenses.data?.length === 0 ? (
-                 <motion.div variants={itemVariants} className="glass-card text-center py-20 border-dashed border-2 border-gray-800">
-                    <p className="text-gray-500 font-medium">No expenses recorded yet. Start sharing the bills!</p>
+                 <motion.div variants={itemVariants} className="glass-card text-center py-24 border-dashed border-slate-200 bg-slate-50/50">
+                    <p className="text-slate-400 font-bold text-lg tracking-tight">No data detected in current node.</p>
                  </motion.div>
               ) : (
-                 <div className="space-y-4">
+                 <div className="space-y-6">
                    {getExpenses.data?.map((expense, idx) => (
                       <motion.div 
                         key={expense.id} 
                         variants={itemVariants}
-                        whileHover={{ x: 5 }}
-                        className="glass-card flex items-center justify-between hover:bg-[#1C2128] transition-all group"
+                        whileHover={{ y: -4 }}
+                        className="glass-card flex items-center justify-between hover:bg-white transition-all group py-8 px-10"
                       >
-                         <div className="flex items-center gap-5">
-                            <div className="w-12 h-12 rounded-2xl bg-gray-800 flex items-center justify-center group-hover:bg-[#7C3AED] group-hover:text-white transition-all shadow-inner">
-                               <Receipt size={22} />
+                         <div className="flex items-center gap-8">
+                            <div className="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-[#0F172A] group-hover:text-white transition-all duration-500 border border-slate-100">
+                               <Receipt size={24} />
                             </div>
                             <div>
-                               <h4 className="font-bold text-lg group-hover:text-[#7C3AED] transition-colors">{expense.title}</h4>
-                               <p className="text-sm text-gray-500 font-medium">
-                                  Paid by <span className="text-gray-300">{expense.paid_by.username}</span> • {new Date(expense.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
-                               </p>
+                               <h4 className="font-bold text-2xl text-[#0F172A] group-hover:tracking-tight transition-all">{expense.title}</h4>
+                               <div className="flex items-center gap-3 mt-2">
+                                  <span className="text-[10px] font-black text-[#6366F1] uppercase tracking-widest">{expense.paid_by.username}</span>
+                                  <div className="w-1 h-1 rounded-full bg-slate-200" />
+                                  <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest">{new Date(expense.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
+                               </div>
                                {expense.due_date && (
-                                  <div className={`text-[10px] font-black uppercase tracking-widest mt-1 flex items-center gap-1.5 ${
-                                    new Date(expense.due_date) < new Date() ? 'text-red-400' : 'text-gray-500'
+                                  <div className={`text-[9px] font-black uppercase tracking-[0.2em] mt-3 flex items-center gap-2 ${
+                                    new Date(expense.due_date) < new Date() ? 'text-[#EC4899]' : 'text-slate-400'
                                   }`}>
-                                    <Clock size={10} />
-                                    Due {new Date(expense.due_date).toLocaleDateString()}
-                                    {new Date(expense.due_date) < new Date() && <span className="bg-red-500/20 px-1.5 py-0.5 rounded text-red-500">Overdue</span>}
+                                    <Clock size={11} />
+                                    DEADLINE: {new Date(expense.due_date).toLocaleDateString()}
+                                    {new Date(expense.due_date) < new Date() && <span className="bg-[#EC4899]/10 px-2 py-0.5 rounded-full text-[#EC4899]">System Overdue</span>}
                                   </div>
                                 )}
                             </div>
                          </div>
-                         <div className="flex items-center gap-4">
+                         <div className="flex items-center gap-10 text-right">
                             {expense.paid_by.id === user?.id && expense.due_date && new Date(expense.due_date) < new Date() && (
                                <button 
                                  onClick={async (e) => {
@@ -248,39 +261,36 @@ const GroupDetail = () => {
                                      await axios.post(`http://localhost:8000/api/expenses/${expense.id}/nudge/`, {}, {
                                        headers: { Authorization: `Bearer ${token}` }
                                      });
-                                     alert('Nudge sent to everyone who hasn\'t paid!');
                                    } catch (err) {
                                      alert('Failed to send nudge.');
                                    }
                                  }}
-                                 className="p-2 hover:bg-red-500/10 rounded-xl text-red-400 border border-red-500/20 transition-all flex items-center gap-2"
+                                 className="w-10 h-10 flex items-center justify-center rounded-full bg-slate-50 text-slate-400 hover:bg-[#6366F1] hover:text-white hover:scale-110 transition-all border border-slate-100 group/nudge"
                                  title="Nudge Debtors"
                                >
-                                 <Bell size={14} className="animate-bounce" />
-                                 <span className="text-[10px] font-black uppercase tracking-widest">Nudge</span>
+                                 <Bell size={16} className="group-hover/nudge:animate-shake" />
                                </button>
                             )}
-                            <div className="text-right">
-                               <div className="font-black text-2xl tracking-tight">₹{parseFloat(expense.amount).toLocaleString()}</div>
-                               <div className="text-[10px] text-[#7C3AED] font-black uppercase tracking-widest mt-1 opacity-70">{expense.category}</div>
+                            <div>
+                               <div className="font-bold text-3xl tracking-tighter text-[#0F172A]">₹{parseFloat(expense.amount).toLocaleString()}</div>
+                               <div className="text-[9px] text-slate-400 font-black uppercase tracking-[0.3em] mt-1">{expense.category}</div>
                             </div>
                          </div>
-
                       </motion.div>
                    ))}
                  </div>
               )}
             </div>
 
-            {/* Settlement History */}
-            <div className="space-y-6">
-               <h2 className="text-2xl font-black tracking-tight flex items-center gap-3">
-                 <Wallet className="text-[#84CC16]" />
-                 Payment History
-               </h2>
+            {/* Payment Log */}
+            <div className="space-y-10">
+               <div className="flex items-center gap-4 border-b border-slate-100 pb-6">
+                  <Wallet className="text-[#84CC16]" size={24} />
+                  <h2 className="text-2xl font-bold tracking-tight text-[#0F172A] uppercase">Synchronization History</h2>
+               </div>
                <div className="space-y-4">
                   {group?.settlements?.length === 0 || !group?.settlements ? (
-                     <p className="text-gray-500 text-sm font-medium italic p-10 glass-card bg-transparent border-dashed border-gray-800 text-center">No payments recorded in this circle yet.</p>
+                     <p className="text-slate-400 text-sm font-bold tracking-widest py-20 glass-card bg-slate-50/30 border-dashed text-center">NO DATA DETECTED</p>
                   ) : (
                      group.settlements.slice().reverse().map(s => {
                         const isPayee = s.paid_to === user?.username;
@@ -290,47 +300,49 @@ const GroupDetail = () => {
                           <motion.div 
                             key={s.id} 
                             variants={itemVariants}
-                            className={`glass-card flex items-center justify-between transition-all border ${
-                              isPayer ? 'border-red-500/10 bg-red-500/5' : isPayee ? 'border-green-500/10 bg-green-500/5' : 'bg-transparent'
-                            }`}
+                            className="glass-card flex items-center justify-between border-slate-100 py-6 px-10 hover:bg-white transition-all"
                           >
-                            <div className="flex items-center gap-4">
-                               <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                                  isPayer ? 'bg-red-500/20 text-red-500' : isPayee ? 'bg-green-500/20 text-green-500' : 'bg-gray-800 text-gray-400'
+                            <div className="flex items-center gap-6">
+                               <div className={`w-12 h-12 rounded-full flex items-center justify-center border ${
+                                  isPayer ? 'bg-slate-900 border-slate-900 text-white' : 'bg-slate-50 border-slate-100 text-[#84CC16]'
                                }`}>
-                                  {isPayer ? <TrendingUp size={18} className="rotate-180" /> : <TrendingUp size={18} />}
+                                  <TrendingUp size={20} className={isPayer ? 'rotate-180' : ''} />
                                </div>
                                <div>
-                                  <h4 className="font-bold text-sm">
-                                     {isPayer ? 'You paid ' : `${s.paid_by} paid `}
-                                     <span className="text-[#84CC16]">{isPayee ? 'You' : s.paid_to}</span>
+                                  <h4 className="font-bold text-lg text-[#0F172A] leading-tight">
+                                     {isPayer ? 'YOU ' : `${s.paid_by} `}
+                                     <span className="text-slate-400 font-light mx-1">/</span>
+                                     <span className="text-[#6366F1]">{isPayee ? 'YOU' : s.paid_to}</span>
                                   </h4>
-                                  <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest mt-1">
-                                     {new Date(s.settled_at).toLocaleDateString()} • {s.is_confirmed ? '✅ Verified' : '⏳ Pending'}
+                                  <p className="text-[9px] text-slate-400 font-black uppercase tracking-[0.2em] mt-2">
+                                     TRX_ID {s.id.slice(0,8)} // {new Date(s.settled_at).toLocaleDateString()}
                                   </p>
                                </div>
                             </div>
-                            <div className={`font-black text-xl ${isPayer ? 'text-red-400' : isPayee ? 'text-green-400' : 'text-white'}`}>
-                               {isPayer ? '-' : isPayee ? '+' : ''}₹{parseFloat(s.amount).toFixed(2)}
+                            <div className={`font-bold text-2xl tracking-tighter ${isPayer ? 'text-[#0F172A]' : 'text-[#84CC16]'}`}>
+                               {isPayer ? '-' : '+'}₹{parseFloat(s.amount).toFixed(2)}
                             </div>
                           </motion.div>
                         );
                      })
-                  )}
-               </div>
-            </div>
+                   )}
+                </div>
+             </div>
           </div>
 
 
-          {/* Sidebar */}
-          <div className="space-y-8">
-            <motion.div variants={itemVariants} className="glass-card space-y-6 border-[#84CC16]/20 bg-[#84CC16]/5">
-               <h3 className="font-black text-lg flex items-center gap-3 text-[#84CC16] uppercase tracking-widest">
-                 <Wallet size={20} />
-                 Balances
-               </h3>
+          {/* Cyber Sidebar */}
+          <div className="space-y-12">
+            <motion.div variants={itemVariants} className="glass-card p-0 overflow-hidden bg-white shadow-[0_40px_80px_rgba(15,23,42,0.06)] border-slate-100">
+               <div className="bg-[#0F172A] p-10 text-white">
+                  <div className="flex items-center gap-4 mb-2">
+                     <Wallet size={20} className="text-[#6366F1]" />
+                     <h3 className="font-bold text-sm uppercase tracking-[0.2em]">Cognitive Balances</h3>
+                  </div>
+                  <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.1em]">Network Node Status</p>
+               </div>
                
-               <div className="space-y-4">
+               <div className="p-4 space-y-1">
                   {getBalances.data?.map(balance => {
                     const isMe = balance.user.id === user?.id;
                     const myBalance = getBalances.data?.find(b => b.user.id === user?.id)?.net_balance || 0;
@@ -338,88 +350,74 @@ const GroupDetail = () => {
                     return (
                       <div 
                         key={balance.user.id} 
-                        className={`flex items-center justify-between p-4 rounded-2xl transition-all border ${
-                          isMe ? 'bg-[#7C3AED]/10 border-[#7C3AED]/30 shadow-lg shadow-[#7C3AED]/5' : 'hover:bg-white/5 border-transparent'
+                        className={`flex items-center justify-between p-6 rounded-[1.5rem] transition-all ${
+                          isMe ? 'bg-slate-50 border border-slate-100' : 'hover:bg-slate-50/50'
                         }`}
                       >
-                        <div className="flex items-center gap-4">
-                           <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-sm font-black transition-colors ${
-                              isMe ? 'bg-[#7C3AED] text-white' : 'bg-gray-800 border border-gray-700'
+                        <div className="flex items-center gap-5">
+                           <div className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-black transition-all ${
+                              isMe ? 'bg-[#0F172A] text-white' : 'bg-slate-100 text-slate-400'
                            }`}>
                               {balance.user.username[0].toUpperCase()}
                            </div>
                            <div>
                               <div className="flex items-center gap-2">
-                                <span className={`text-sm font-black ${isMe ? 'text-white' : 'text-gray-300'}`}>
-                                  {isMe ? 'You' : (balance.user.nickname || balance.user.username)}
+                                <span className={`text-sm font-bold ${isMe ? 'text-[#0F172A]' : 'text-slate-600'}`}>
+                                  {isMe ? 'YOU' : balance.user.username}
                                 </span>
-                                {isMe && <span className="text-[10px] font-black uppercase tracking-widest text-[#7C3AED] bg-[#7C3AED]/10 px-2 py-0.5 rounded-md">Me</span>}
+                                {isMe && <span className="text-[10px] font-black text-[#6366F1] tracking-widest ">// MOD</span>}
                               </div>
-                              <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">
-                                {balance.net_balance > 0 ? (isMe ? 'You are owed' : 'Is owed') : (balance.net_balance < 0 ? (isMe ? 'You owe' : 'Owes') : 'Settled')}
+                              <p className="text-[9px] text-slate-400 font-black uppercase tracking-[0.1em] mt-1">
+                                {balance.net_balance > 0 ? 'Surplus' : balance.net_balance < 0 ? 'Deficit' : 'Synced'}
                               </p>
-
                            </div>
                         </div>
-                        <div className="flex flex-col items-end gap-2">
-                           <div className={`text-lg font-black tracking-tight ${balance.net_balance >= 0 ? 'text-[#84CC16]' : 'text-[#F43F5E]'}`}>
-                              {balance.net_balance > 0 ? '+' : ''}₹{Math.abs(balance.net_balance).toFixed(2)}
+                        
+                        <div className="flex flex-col items-end gap-3">
+                           <div className={`text-lg font-bold tracking-tighter ${balance.net_balance >= 0 ? 'text-[#0F172A]' : 'text-[#EC4899]'}`}>
+                              ₹{Math.abs(balance.net_balance).toFixed(2)}
                            </div>
                            
-                           {/* Action Buttons */}
                            <div className="flex gap-2">
-                              {/* If this is ME and I owe money, show Pay button on MY row */}
                               {isMe && balance.net_balance < 0 && (
                                 <button 
                                   onClick={() => {
                                     const creditor = getBalances.data.find(b => b.net_balance > 0);
-                                    if (creditor) {
-                                      initiateRazorpayPayment(creditor.user.id, Math.abs(balance.net_balance));
-                                    } else {
-                                      alert("No one to pay! Everyone's settled.");
-                                    }
+                                    if (creditor) initiateRazorpayPayment(creditor.user.id, Math.abs(balance.net_balance));
+                                    else alert("SYTEM_SYNCED");
                                   }}
-                                  className="px-4 py-2 bg-[#84CC16] text-black rounded-xl text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all shadow-lg shadow-[#84CC16]/20"
+                                  className="px-4 py-2 bg-[#0F172A] text-white rounded-full text-[9px] font-black uppercase tracking-widest hover:bg-[#6366F1] transition-all"
                                 >
-                                  Settle Now
+                                  SYNC
                                 </button>
                               )}
-                              
-                              {/* If I am a creditor and they are a debtor, show Remind button next to THEM */}
                               {myBalance > 0 && balance.net_balance < 0 && !isMe && (
                                 <button 
                                   onClick={() => remindMutation.mutate({ groupId: id, userId: balance.user.id })}
-                                  disabled={remindMutation.isPending}
-                                  className="p-2.5 bg-gray-800 hover:bg-gray-700 rounded-xl text-gray-400 hover:text-[#7C3AED] transition-all disabled:opacity-50" 
-                                  title="Send Reminder"
+                                  className="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:text-[#6366F1] transition-all border border-slate-200"
                                 >
-                                  {remindMutation.isPending ? <Loader2 size={16} className="animate-spin" /> : <Bell size={16} />}
+                                  <Bell size={14} />
                                 </button>
                               )}
                            </div>
-
                         </div>
                       </div>
                     );
                   })}
-                </div>
+               </div>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="glass-card bg-[#7C3AED]/10 border-[#7C3AED]/20">
-               <h3 className="font-black text-sm mb-2 text-[#7C3AED] uppercase tracking-widest">Circle Invite</h3>
-               <p className="text-xs text-gray-400 mb-5 font-medium leading-relaxed">Let your friends join this circle using the code below.</p>
-               <div className="bg-[#0D1117]/80 border-2 border-dashed border-[#7C3AED]/30 p-5 rounded-2xl flex items-center justify-between group/code transition-all hover:border-[#7C3AED]">
-                  <span className="font-mono font-black text-xl tracking-[0.2em] text-[#7C3AED]">{group?.invite_code || "..."}</span>
-                  <button 
-                    className="text-[10px] font-black uppercase text-gray-500 hover:text-white transition-colors"
-                    onClick={() => {
-                        navigator.clipboard.writeText(group?.invite_code);
-                        alert('Code copied!');
-                    }}
-                  >
-                    Copy
-                  </button>
+            <motion.div variants={itemVariants} className="glass-card bg-[#F8FAFC] border-slate-200 shadow-sm p-10">
+               <span className="text-[9px] font-black text-[#6366F1] uppercase tracking-[0.4em] mb-4 block">Network Access</span>
+               <h3 className="font-bold text-2xl text-[#0F172A] mb-8 tracking-tight">Sync Code</h3>
+               <div className="bg-white border-2 border-slate-100 p-6 rounded-full flex items-center justify-between group/code cursor-pointer hover:border-[#6366F1] transition-all"
+                    onClick={() => { navigator.clipboard.writeText(group?.invite_code); alert('CODE_COPIED'); }}>
+                  <span className="font-mono font-bold text-2xl tracking-[0.4em] text-[#0F172A] pl-4">{group?.invite_code || "SYNCING"}</span>
+                  <div className="w-10 h-10 bg-slate-900 rounded-full flex items-center justify-center text-white">
+                     <Plus size={18} />
+                  </div>
                </div>
+               <p className="text-[10px] text-slate-400 mt-6 font-black uppercase tracking-widest px-4">SECURE PEER-TO-PEER ENCRYPTION</p>
             </motion.div>
           </div>
         </div>

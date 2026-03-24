@@ -1,4 +1,5 @@
 import React from 'react';
+import { Users } from 'lucide-react';
 import { useGroups } from '../hooks/useGroups';
 import Layout from '../components/Layout';
 import { useAuthStore } from '../store/authStore';
@@ -39,99 +40,118 @@ const Dashboard = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="space-y-12"
+        className="space-y-16"
       >
-        <header className="flex flex-col gap-1">
-          <motion.h1 variants={itemVariants} className="text-4xl font-black tracking-tight">
-            Welcome back, <span className="text-[#7C3AED]">{user?.first_name || user?.username}</span>!
+        <header className="flex flex-col gap-4">
+          <motion.div variants={itemVariants} className="flex items-center gap-3">
+             <div className="w-10 h-1 bg-[#6366F1] rounded-full" />
+             <span className="text-[10px] font-black text-[#6366F1] uppercase tracking-[0.4em]">Personal Analytics</span>
+          </motion.div>
+          <motion.h1 variants={itemVariants} className="text-7xl font-bold tracking-[-0.05em] text-[#0F172A] leading-[1] max-w-4xl">
+            ORCHESTRATE YOUR <span className="text-slate-400 font-light">FINANCIAL FLOW.</span>
           </motion.h1>
-          <motion.p variants={itemVariants} className="text-gray-400 text-lg">
-            Here's what's happening in your circles today.
+          <motion.p variants={itemVariants} className="text-slate-500 text-xl font-medium max-w-2xl mt-4">
+            High-performance tracking for your shared expenses and circle synchronization.
           </motion.p>
         </header>
 
-        {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Summary HUD */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-6">
           {[
-            { label: 'You are owed', value: mockSummary.oweToMe, color: '#84CC16', bg: 'bg-[#84CC16]/10' },
-            { label: 'You owe', value: mockSummary.iOwe, color: '#F43F5E', bg: 'bg-[#F43F5E]/10' },
-            { label: 'Net Balance', value: mockSummary.net, color: '#7C3AED', bg: 'bg-[#7C3AED]/10' }
+            { label: 'Owed to Circle', value: mockSummary.oweToMe, color: '#0F172A', accent: '#6366F1' },
+            { label: 'Your Debt', value: mockSummary.iOwe, color: '#0F172A', accent: '#EC4899' },
+            { label: 'Cognitive Balance', value: mockSummary.net, color: '#0F172A', accent: '#84CC16' }
           ].map((card, i) => (
             <motion.div 
               key={i}
               variants={itemVariants}
               whileHover={{ y: -5 }}
-              className="glass-card p-8 group relative overflow-hidden"
+              className="glass-card p-10 group flex flex-col justify-between min-h-[200px]"
             >
-              <div className={`absolute top-0 right-0 w-32 h-32 ${card.bg} rounded-full blur-3xl -mr-16 -mt-16 transition-all group-hover:scale-150`}></div>
-              <p className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-2">{card.label}</p>
-              <div className="text-4xl font-black" style={{ color: card.color }}>₹{card.value.toLocaleString()}</div>
+              <div className="flex items-center justify-between mb-8">
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">{card.label}</p>
+                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: card.accent }} />
+              </div>
+              <div className="space-y-1">
+                <div className="text-5xl font-bold tracking-tighter" style={{ color: card.color }}>₹{card.value.toLocaleString()}</div>
+                <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden mt-6">
+                   <motion.div 
+                     initial={{ width: 0 }}
+                     animate={{ width: '60%' }}
+                     className="h-full" 
+                     style={{ backgroundColor: card.accent }} 
+                   />
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>
 
-        {/* Groups Grid */}
-        <section className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold tracking-tight">Your Groups</h2>
-            <div className="flex gap-3">
+        {/* Circles Interface */}
+        <section className="space-y-12">
+          <div className="flex flex-col sm:flex-row items-baseline justify-between gap-6 border-b border-slate-200 pb-8">
+            <div className="flex items-center gap-6">
+               <h2 className="text-3xl font-bold tracking-tight text-[#0F172A]">OPERATIONAL CIRCLES</h2>
+               <span className="px-3 py-1 rounded-full bg-slate-100 text-[10px] font-black text-slate-500 tracking-widest">{getGroups.data?.length || 0} ACTIVE</span>
+            </div>
+            <div className="flex gap-4 w-full sm:w-auto">
               <button 
                 onClick={() => setIsJoinModalOpen(true)}
-                className="btn-secondary px-6 py-2.5 rounded-xl font-bold text-sm"
+                className="btn-secondary"
               >
-                Join Code
+                SYNC CODE
               </button>
               <button 
                 onClick={() => setIsCreateModalOpen(true)}
-                className="btn-primary px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-[#7C3AED]/20"
+                className="btn-primary"
               >
-                Create Group
+                + EXPAND NETWORK
               </button>
             </div>
           </div>
 
-          <CreateGroupModal 
-            isOpen={isCreateModalOpen} 
-            onClose={() => setIsCreateModalOpen(false)} 
-          />
-
-          <JoinGroupModal 
-            isOpen={isJoinModalOpen} 
-            onClose={() => setIsJoinModalOpen(false)} 
-          />
-
           {getGroups.isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1, 2, 3].map(i => <div key={i} className="glass-card h-48 animate-pulse bg-gray-800/50"></div>)}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[1, 2, 3].map(i => <div key={i} className="glass-card h-64 animate-pulse"></div>)}
             </div>
           ) : getGroups.data?.length === 0 ? (
-            <motion.div variants={itemVariants} className="glass-card text-center py-20 bg-gray-900/20 border-dashed border-2 border-gray-800">
-              <div className="text-gray-500 text-lg mb-6">No active groups found.</div>
-              <button onClick={() => setIsCreateModalOpen(true)} className="btn-primary px-8 py-3 rounded-xl font-bold">Start Your First Group</button>
+            <motion.div variants={itemVariants} className="glass-card text-center py-32 bg-slate-50/50 border-dashed">
+              <div className="text-slate-400 text-xl font-bold mb-10 tracking-tight">System ready. No active circles detected.</div>
+              <button onClick={() => setIsCreateModalOpen(true)} className="btn-primary">Initialize Circle</button>
             </motion.div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {getGroups.data?.map(group => (
                 <motion.div 
                   key={group.id} 
                   variants={itemVariants}
-                  whileHover={{ y: -5, borderColor: 'rgba(124, 58, 237, 0.4)' }}
+                  whileHover={{ y: -8 }}
                   onClick={() => navigate(`/groups/${group.id}`)}
-                  className="glass-card group cursor-pointer hover:bg-[#1C2128] transition-all duration-300"
+                  className="glass-card group cursor-pointer hover:bg-white p-8"
                 >
-                  <div className="flex items-start justify-between mb-6">
-                    <div className="w-14 h-14 bg-gray-800 rounded-2xl overflow-hidden font-bold flex items-center justify-center text-2xl text-[#7C3AED] ring-1 ring-gray-700">
+                  <div className="flex items-start justify-between mb-10">
+                    <div className="w-14 h-14 bg-slate-50 rounded-full flex items-center justify-center text-2xl font-black text-[#0F172A] border border-slate-200 group-hover:bg-[#0F172A] group-hover:text-white transition-all duration-500">
                       {group.name[0]}
                     </div>
-                    <span className="text-[10px] px-3 py-1 rounded-full bg-[#7C3AED]/10 text-[#7C3AED] font-black border border-[#7C3AED]/20 uppercase tracking-widest">
-                      {group.category}
-                    </span>
+                    <div className="flex flex-col items-end">
+                       <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Sector</span>
+                       <span className="text-[11px] font-black text-[#6366F1] uppercase tracking-widest">{group.category}</span>
+                    </div>
                   </div>
-                  <h3 className="font-bold text-xl mb-2 group-hover:text-[#7C3AED] transition-colors">{group.name}</h3>
-                  <div className="text-sm text-gray-500 line-clamp-2 mb-6 leading-relaxed">{group.description || "Track shared expenses and settle balances effortlessly."}</div>
-                  <div className="flex items-center justify-between text-[10px] font-black text-gray-400 pt-5 border-t border-gray-800 uppercase tracking-widest">
-                    <span>{group.members_count} Members</span>
-                    <span>{new Date(group.created_at).toLocaleDateString(undefined, { month: 'short', year: 'numeric' })}</span>
+                  
+                  <h3 className="font-bold text-2xl mb-4 text-[#0F172A] group-hover:tracking-tight transition-all">{group.name}</h3>
+                  <p className="text-slate-500 text-sm font-medium line-clamp-2 mb-10 leading-relaxed">{group.description || "High-performance synchronization for your shared ecosystem."}</p>
+                  
+                  <div className="flex items-center justify-between pt-6 border-t border-slate-100">
+                    <div className="flex items-center gap-2">
+                       <div className="flex -space-x-2">
+                          {[1,2,3].map(i => <div key={i} className="w-6 h-6 rounded-full bg-slate-200 border-2 border-white" />)}
+                       </div>
+                       <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">{group.members_count} Nodes</span>
+                    </div>
+                    <div className="text-[9px] font-black text-slate-300 uppercase tracking-widest">
+                       ACTV / {new Date(group.created_at).toLocaleDateString(undefined, { month: 'short', year: 'numeric' })}
+                    </div>
                   </div>
                 </motion.div>
               ))}
@@ -139,6 +159,7 @@ const Dashboard = () => {
           )}
         </section>
       </motion.div>
+
     </Layout>
   );
 };

@@ -165,148 +165,141 @@ const AddExpenseModal = ({ isOpen, onClose, group }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-black/80 backdrop-blur-md"
+            className="absolute inset-0 bg-[#0F172A]/40 backdrop-blur-[8px]"
           />
           <motion.div 
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="glass-card w-full max-w-3xl bg-[#161B22] p-0 overflow-hidden shadow-2xl relative flex flex-col max-h-[90vh] border-gray-800/50"
+            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+            className="glass-card w-full max-w-4xl bg-white/90 p-0 overflow-hidden shadow-[0_48px_96px_rgba(15,23,42,0.18)] relative flex flex-col max-h-[92vh] border-slate-200"
           >
-            {/* Header */}
-            <div className="p-6 border-b border-gray-800 flex items-center justify-between bg-gray-900/30 shrink-0">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-[#7C3AED] rounded-2xl flex items-center justify-center text-white shadow-lg shadow-[#7C3AED]/20">
-                  <Receipt size={24} />
+            {/* HUD Header */}
+            <div className="p-10 border-b border-slate-100 flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-8">
+                <div className="w-16 h-16 bg-[#0F172A] rounded-full flex items-center justify-center text-white shadow-lg relative overflow-hidden">
+                   <div className="absolute inset-0 bg-white/10" />
+                   <Receipt size={24} />
                 </div>
                 <div>
-                  <h2 className="text-xl font-black tracking-tight">Record Expense</h2>
-                  <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">{group?.name || 'Loading Circle...'}</p>
+                  <h2 className="text-3xl font-bold tracking-tight text-[#0F172A] uppercase">Initialize Entry</h2>
+                  <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.4em] mt-2 block">SEC_NODE // {group?.name || 'SYNCING'}</p>
                 </div>
               </div>
               <button 
                 onClick={onClose} 
-                className="p-3 hover:bg-gray-800/50 rounded-2xl transition-all text-gray-400 hover:text-white"
+                className="w-12 h-12 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-400 hover:text-[#0F172A] transition-all"
               >
                 <X size={20} />
               </button>
             </div>
 
-            {/* Content */}
+            {/* Content Core */}
             {!group ? (
-               <div className="flex-1 flex flex-col items-center justify-center p-20 space-y-4">
-                  <Loader2 className="animate-spin text-[#7C3AED]" size={40} />
-                  <p className="text-gray-500 font-bold uppercase tracking-widest text-xs">Fetching group details...</p>
+               <div className="flex-1 flex flex-col items-center justify-center p-24 space-y-8">
+                  <div className="w-12 h-12 border-4 border-slate-100 border-t-[#6366F1] rounded-full animate-spin" />
+                  <p className="text-slate-400 font-black uppercase tracking-widest text-xs">Querying Metadata...</p>
                </div>
             ) : (
-            <div className="flex-1 overflow-y-auto p-8 custom-scrollbar space-y-10">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            <div className="flex-1 overflow-y-auto p-12 custom-scrollbar space-y-16">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
 
-                {/* Left Side: Inputs */}
-                <div className="space-y-6">
-                   <div className="space-y-3">
-                      <label className="text-[10px] font-black text-[#7C3AED] uppercase tracking-[0.2em] block">Core Details</label>
+                {/* Left: Input Matrix */}
+                <div className="space-y-12">
+                   <div className="space-y-6">
+                      <label className="text-[10px] font-black text-[#6366F1] uppercase tracking-[0.4em] block ml-6">Entry Identifier</label>
                       <input 
                          type="text" 
-                         placeholder="What was this for?" 
+                         placeholder="GLOBAL_EXPENSE_TAG" 
                          value={title}
                          onChange={(e) => setTitle(e.target.value)}
-                         className="input-field w-full text-lg h-14 bg-gray-900/50"
+                         className="input-field w-full text-2xl h-16 rounded-full px-10 bg-slate-50/50 border-slate-200"
                          required
                        />
-                       <div className="flex gap-3">
+                       <div className="flex gap-4">
                           <div className="relative shrink-0">
                              <select 
                                value={currency}
                                onChange={(e) => setCurrency(e.target.value)}
-                               className="input-field w-24 h-14 appearance-none text-center pr-4 font-black text-[#7C3AED]"
+                               className="input-field w-32 h-16 appearance-none text-center font-black text-[#0F172A] bg-slate-50/50 rounded-full border-slate-200"
                              >
                                {['INR', 'USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'AED'].map(c => (
                                   <option key={c} value={c}>{c}</option>
                                ))}
                              </select>
-                             <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-600">▾</div>
                           </div>
                           <input 
                             type="number" 
                             placeholder="0.00" 
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
-                            className="input-field flex-1 h-14 text-2xl font-black bg-gray-900/50"
+                            className="input-field flex-1 h-16 text-3xl font-bold tracking-tighter bg-slate-50/50 rounded-full px-10 border-slate-200"
                             required
                           />
                        </div>
                    </div>
 
-                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Paid By</label>
-                        <div className="relative">
-                            <select 
-                            value={paidBy}
-                            onChange={(e) => setPaidBy(e.target.value)}
-                            className="input-field w-full h-12 appearance-none pr-10 font-bold"
-                            >
-                            {group?.memberships?.map(m => (
-                                <option key={m.user.id} value={m.user.id}>{m.user.nickname || m.user.username}</option>
-                            ))}
-                            </select>
-                            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-600">▾</div>
-                        </div>
+                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                      <div className="space-y-3">
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-6">Source Node</label>
+                        <select 
+                          value={paidBy}
+                          onChange={(e) => setPaidBy(e.target.value)}
+                          className="input-field w-full h-14 bg-white/60 rounded-full px-8 appearance-none cursor-pointer border-slate-200"
+                        >
+                          {group?.memberships?.map(m => (
+                              <option key={m.user.id} value={m.user.id}>{m.user.username}</option>
+                          ))}
+                        </select>
                       </div>
                       
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Due Date (Optional)</label>
+                      <div className="space-y-3">
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-6">Deadline (Sync)</label>
                         <input 
                           type="date" 
                           value={dueDate}
                           onChange={(e) => setDueDate(e.target.value)}
-                          className="input-field w-full h-12 font-bold"
+                          className="input-field w-full h-14 bg-white/60 rounded-full px-8 border-slate-200"
                         />
                       </div>
                    </div>
 
-                   <div className="space-y-2">
-                        <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Category</label>
-                        <div className="relative">
-                            <select 
-                            value={category}
-                            onChange={(e) => setCategory(e.target.value)}
-                            className="input-field w-full h-12 appearance-none pr-10 font-bold"
-                            >
-                                <option value="food">🍔 Food & Drink</option>
-                                <option value="transport">🚗 Transport</option>
-                                <option value="hotel">🏨 Accommodation</option>
-                                <option value="shopping">🛍️ Shopping</option>
-                                <option value="entertainment">🎭 Entertainment</option>
-                                <option value="other">📦 Other</option>
-                            </select>
-                            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-600">▾</div>
-                        </div>
-                      </div>
+                   <div className="space-y-3">
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-6">Category Sector</label>
+                        <select 
+                          value={category}
+                          onChange={(e) => setCategory(e.target.value)}
+                          className="input-field w-full h-14 bg-white/60 rounded-full px-8 appearance-none cursor-pointer border-slate-200"
+                        >
+                            <option value="food">FOOD_RESOURCES</option>
+                            <option value="transport">LOGISTICS_BASE</option>
+                            <option value="hotel">DWELLING_UNIT</option>
+                            <option value="shopping">ASSET_ACQUISITION</option>
+                            <option value="entertainment">COGNITIVE_RECREATION</option>
+                            <option value="other">UNCATEGORIZED_FLOW</option>
+                        </select>
+                    </div>
 
-
-                   <label className="btn-secondary h-14 flex items-center gap-3 cursor-pointer justify-center hover:border-[#7C3AED]/50 transition-all border-dashed group w-full">
-                      {isScanning ? <Loader2 size={18} className="animate-spin text-[#7C3AED]" /> : <Camera size={18} className="text-gray-400 group-hover:text-[#7C3AED]" />}
-                      <span className="text-sm font-bold">Scan Receipt</span>
-                      <input type="file" hidden accept="image/*" onChange={handleScan} disabled={isScanning} />
-                   </label>
+                    <label className="h-16 flex items-center gap-4 cursor-pointer justify-center hover:bg-slate-50 transition-all border-2 border-dashed border-slate-100 rounded-full group w-full bg-white/40">
+                       {isScanning ? <Loader2 size={20} className="animate-spin text-[#6366F1]" /> : <Camera size={20} className="text-slate-300 group-hover:text-[#6366F1] transition-colors" />}
+                       <span className="text-[10px] font-black text-slate-400 group-hover:text-[#0F172A] transition-colors uppercase tracking-[0.3em]">Digitalize Neural Receipt</span>
+                       <input type="file" hidden accept="image/*" onChange={handleScan} disabled={isScanning} />
+                    </label>
                 </div>
 
-                {/* Right Side: Strategy */}
-                <div className="space-y-6">
-                  <div className="space-y-3">
-                     <label className="text-[10px] font-black text-[#7C3AED] uppercase tracking-[0.2em] block">Splitting Strategy</label>
-                     <div className="grid grid-cols-2 gap-2">
+                {/* Right: Strategy Cluster */}
+                <div className="space-y-12">
+                  <div className="space-y-6">
+                     <label className="text-[10px] font-black text-[#6366F1] uppercase tracking-[0.4em] block ml-6">Splitting Protocol</label>
+                     <div className="grid grid-cols-2 gap-4">
                        {['equal', 'exact', 'percentage', 'shares'].map((type) => (
                          <button
                            key={type}
                            type="button"
                            onClick={() => setSplitType(type)}
-                           className={`p-3 rounded-xl border font-black uppercase text-[10px] tracking-widest transition-all ${
+                           className={`h-14 rounded-full border font-black uppercase text-[9px] tracking-[0.3em] transition-all ${
                              splitType === type 
-                             ? 'border-[#7C3AED] bg-[#7C3AED]/10 text-white shadow-[0_0_15px_rgba(124,58,237,0.2)]' 
-                             : 'border-gray-800 bg-gray-900/20 text-gray-500 hover:border-gray-700'
+                             ? 'bg-[#0F172A] text-white border-[#0F172A] shadow-lg shadow-[#0F172A]/20' 
+                             : 'border-slate-100 bg-white/50 text-slate-400 hover:border-slate-200'
                            }`}
                          >
                            {type}
@@ -315,37 +308,37 @@ const AddExpenseModal = ({ isOpen, onClose, group }) => {
                      </div>
                   </div>
 
-                  {/* Participant Selection */}
-                  <div className="bg-gray-900/30 rounded-2xl p-5 border border-gray-800/80">
-                    <div className="flex items-center justify-between mb-4">
-                        <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-2">
-                            <Users size={14} className="text-[#7C3AED]" />
-                            Splitting with {selectedParticipants.length} people
+                  {/* Node Network */}
+                  <div className="bg-slate-50/50 rounded-[2.5rem] p-10 border border-slate-100">
+                    <div className="flex items-center justify-between mb-8">
+                        <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] flex items-center gap-4">
+                            <Users size={14} className="text-[#6366F1]" />
+                            {selectedParticipants.length} NODES_SYNCED
                         </span>
                         <button 
                             type="button" 
                             onClick={toggleAll}
-                            className="text-[10px] font-black text-[#7C3AED] hover:underline uppercase tracking-widest"
+                            className="text-[9px] font-black text-[#6366F1] hover:text-[#0F172A] uppercase tracking-[0.3em] transition-all"
                         >
-                            {selectedParticipants.length === group?.memberships?.length ? 'Deselect All' : 'Select All'}
+                            {selectedParticipants.length === group?.memberships?.length ? 'SYSTEM_RESET' : 'SYNC_ALL'}
                         </button>
                     </div>
-                    <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto custom-scrollbar pr-2">
+                    <div className="grid grid-cols-2 gap-4 max-h-60 overflow-y-auto custom-scrollbar pr-2">
                         {group?.memberships?.map(m => (
                             <button
                                 key={m.user.id}
                                 type="button"
                                 onClick={() => toggleParticipant(m.user.id)}
-                                className={`flex items-center gap-2 p-2.5 rounded-xl transition-all border ${
+                                className={`flex items-center gap-4 p-4 rounded-full transition-all border ${
                                     selectedParticipants.includes(m.user.id)
-                                    ? 'bg-[#7C3AED]/10 border-[#7C3AED]/40 text-white'
-                                    : 'bg-transparent border-transparent text-gray-500 hover:bg-gray-800/50'
+                                    ? 'bg-white border-slate-200 text-[#0F172A] shadow-sm'
+                                    : 'bg-transparent border-transparent text-slate-400 hover:bg-white/40'
                                 }`}
                             >
-                                <div className={`w-5 h-5 rounded-full flex items-center justify-center transition-all ${selectedParticipants.includes(m.user.id) ? 'bg-[#84CC16]' : 'border-2 border-gray-700'}`}>
-                                   {selectedParticipants.includes(m.user.id) && <CheckCircle2 size={14} className="text-white" />}
+                                <div className={`w-5 h-5 rounded-full flex items-center justify-center transition-all ${selectedParticipants.includes(m.user.id) ? 'bg-[#0F172A] text-white' : 'border border-slate-200'}`}>
+                                   {selectedParticipants.includes(m.user.id) && <CheckCircle2 size={12} />}
                                 </div>
-                                <span className="text-xs font-bold truncate">{m.user.nickname || m.user.username}</span>
+                                <span className="text-[11px] font-bold truncate uppercase tracking-tight">{m.user.username}</span>
                             </button>
                         ))}
                     </div>
@@ -353,29 +346,29 @@ const AddExpenseModal = ({ isOpen, onClose, group }) => {
                 </div>
               </div>
 
-              {/* Dynamic Inputs */}
+              {/* Dynamic Allocation Panel */}
               {(splitType !== 'equal') && (
                 <motion.div 
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  className="space-y-4 pt-8 border-t border-gray-800"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="space-y-8 pt-16 border-t border-slate-100"
                 >
-                  <label className="text-[10px] font-black text-[#7C3AED] uppercase tracking-[0.2em] block">Individual Shares</label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <label className="text-[10px] font-black text-[#6366F1] uppercase tracking-[0.4em] block ml-6">Node-Specific Allocation</label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {group?.memberships?.map(m => (
-                      <div key={m.user.id} className={`flex items-center justify-between p-4 rounded-2xl border transition-all ${selectedParticipants.includes(m.user.id) ? 'bg-gray-900/50 border-gray-800' : 'opacity-30 pointer-events-none grayscale'}`}>
-                        <span className="text-xs font-bold truncate">{m.user.nickname || m.user.username}</span>
-                        <div className="flex items-center gap-2">
+                      <div key={m.user.id} className={`flex items-center justify-between p-6 rounded-[1.75rem] border transition-all ${selectedParticipants.includes(m.user.id) ? 'bg-white border-slate-200 shadow-sm' : 'opacity-10 pointer-events-none'}`}>
+                        <span className="text-[11px] font-bold text-slate-500 truncate uppercase mt-1 px-2">{m.user.username}</span>
+                        <div className="flex items-center gap-4">
                            <input 
                               type="number" 
                               placeholder="0" 
-                              className="bg-gray-800 border border-gray-700 rounded-lg w-24 h-10 text-right px-3 text-sm font-black focus:border-[#7C3AED] outline-none"
+                              className="bg-slate-50 border border-slate-100 rounded-full w-24 h-12 text-center px-4 text-sm font-black focus:border-[#6366F1] focus:bg-white outline-none transition-all"
                               value={memberValues[m.user.id] || ''}
                               onChange={(e) => setMemberValues({...memberValues, [m.user.id]: e.target.value})}
                               disabled={!selectedParticipants.includes(m.user.id)}
                             />
-                            <span className="text-[10px] text-gray-500 font-black uppercase w-6">
-                              {splitType === 'exact' ? currency : splitType === 'percentage' ? '%' : 'sh'}
+                            <span className="text-[9px] text-slate-300 font-black uppercase w-6">
+                              {splitType === 'exact' ? currency : splitType === 'percentage' ? '%' : 'SH'}
                             </span>
                         </div>
                       </div>
@@ -386,17 +379,14 @@ const AddExpenseModal = ({ isOpen, onClose, group }) => {
             </div>
             )}
 
-            {/* Footer */}
-
-            <div className="p-8 border-t border-gray-800 bg-gray-900/40 shrink-0">
+            {/* HUD Footer */}
+            <div className="p-10 border-t border-slate-100 bg-slate-50/30 shrink-0">
               <button 
                 onClick={handleSubmit}
                 disabled={createExpense.isPending || !amount || parseFloat(amount) <= 0 || !title || selectedParticipants.length === 0}
-                className="w-full btn-primary h-16 rounded-2xl font-black uppercase tracking-widest shadow-2xl shadow-[#7C3AED]/30 flex items-center justify-center gap-4 hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-50 disabled:hover:scale-100"
-
+                className="btn-primary w-full h-16 rounded-full"
               >
-                {createExpense.isPending ? <Loader2 className="animate-spin" /> : <Receipt size={22} />}
-                <span>{createExpense.isPending ? 'Syncing...' : 'Confirm Expense'}</span>
+                {createExpense.isPending ? 'SYNCHRONIZING_DATA...' : 'INITIALIZE SYNC'}
               </button>
             </div>
           </motion.div>
@@ -405,6 +395,5 @@ const AddExpenseModal = ({ isOpen, onClose, group }) => {
     </AnimatePresence>
   );
 };
-
 
 export default AddExpenseModal;
