@@ -1,0 +1,50 @@
+
+> frontend@0.0.0 lint
+> eslint .
+
+
+C:\Users\yugsa\OneDrive\Desktop\EXPENSE_SPLITTER\frontend\src\components\AddExpenseModal.jsx
+  5:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\yugsa\OneDrive\Desktop\EXPENSE_SPLITTER\frontend\src\components\CreateGroupModal.jsx
+  4:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\yugsa\OneDrive\Desktop\EXPENSE_SPLITTER\frontend\src\components\JoinGroupModal.jsx
+  4:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\yugsa\OneDrive\Desktop\EXPENSE_SPLITTER\frontend\src\components\Layout.jsx
+  9:9  error  'navItems' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\yugsa\OneDrive\Desktop\EXPENSE_SPLITTER\frontend\src\components\Navbar.jsx
+  7:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\yugsa\OneDrive\Desktop\EXPENSE_SPLITTER\frontend\src\hooks\useGroups.js
+  46:34  error  React Hook "useQuery" is called in function "getGroupDetail" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word "use"  react-hooks/rules-of-hooks
+
+C:\Users\yugsa\OneDrive\Desktop\EXPENSE_SPLITTER\frontend\src\main.jsx
+  16:7  error  Fast refresh only works when a file has exports. Move your component(s) to a separate file  react-refresh/only-export-components
+
+C:\Users\yugsa\OneDrive\Desktop\EXPENSE_SPLITTER\frontend\src\pages\Dashboard.jsx
+   9:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u         no-unused-vars
+  12:11  error  'user' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\yugsa\OneDrive\Desktop\EXPENSE_SPLITTER\frontend\src\pages\GroupDetail.jsx
+   10:24  error  'getNotifications' is defined but never used. Allowed unused vars must match /^[A-Z_]/u         no-unused-vars
+   14:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                   no-unused-vars
+   32:35  error  'isGroupLoading' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+   40:9   error  'settleMutation' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+   89:20  error  'err' is defined but never used                                                                 no-unused-vars
+  104:14  error  'err' is defined but never used                                                                 no-unused-vars
+  230:53  error  'idx' is defined but never used                                                                 no-unused-vars
+  267:45  error  'err' is defined but never used                                                                 no-unused-vars
+
+C:\Users\yugsa\OneDrive\Desktop\EXPENSE_SPLITTER\frontend\src\pages\Login.jsx
+   5:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  32:14  error  'err' is defined but never used                                                no-unused-vars
+
+C:\Users\yugsa\OneDrive\Desktop\EXPENSE_SPLITTER\frontend\src\pages\Register.jsx
+   4:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  30:14  error  'err' is defined but never used                                                no-unused-vars
+
+??? 21 problems (21 errors, 0 warnings)
+
