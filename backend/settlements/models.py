@@ -18,12 +18,27 @@ class Settlement(models.Model):
     amount = models.DecimalField(max_digits=12, decimal_places=2)
 
     currency = models.CharField(max_length=3, default='INR')
+    converted_amount = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     proof_image = models.ImageField(upload_to='settlement_proofs/', null=True, blank=True)
     payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD_CHOICES, default='cash')
     note = models.TextField(blank=True)
     settled_at = models.DateTimeField(auto_now_add=True)
     recorded_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='settlements_recorded')
     is_confirmed = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        if not self.converted_amount:
+            if self.currency == self.group.currency:
+                self.converted_amount = self.amount
+            else:
+                try:
+                    from currencies.models import CurrencyRate
+                    rate_obj = CurrencyRate.objects.get(base_currency=self.currency, target_currency=self.group.currency)
+                    self.converted_amount = self.amount * rate_obj.rate
+                except (CurrencyRate.DoesNotExist, Exception):
+                    self.converted_amount = self.amount
+        super().save(*args, **kwargs)
+
 
     def __str__(self):
         return f"{self.paid_by.username} paid {self.paid_to.username} - {self.amount}"

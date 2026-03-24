@@ -10,6 +10,8 @@ urlpatterns = [
     path('api/reports/', include('reports.urls')),
     path('api/notifications/', include('notifications.urls')),
     path('api/settlements/', include('settlements.urls')),
+    path('api/currencies/', include('currencies.urls')),
+
 
 
 

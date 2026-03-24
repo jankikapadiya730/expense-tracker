@@ -53,7 +53,8 @@ const GroupDetail = () => {
       // 1. Create Order on Backend
       const { data: orderData } = await axios.post('http://localhost:8000/api/settlements/create-order/', {
         amount: Math.abs(amount),
-        currency: 'INR',
+        currency: group?.currency || 'INR',
+
         paid_to_id: receiverId,
         group_id: id
       }, {
@@ -151,20 +152,53 @@ const GroupDetail = () => {
           <motion.div variants={itemVariants} className="flex flex-wrap gap-3">
              <div className="flex gap-2 bg-white/50 p-2 rounded-full border border-slate-200">
                 <button 
-                  onClick={() => window.open(`http://localhost:8000/api/reports/group/${id}/pdf/`, '_blank')}
+                  onClick={async () => {
+                    try {
+                      const response = await axios.get(`http://localhost:8000/api/reports/group/${id}/pdf/`, {
+                        headers: { Authorization: `Bearer ${token}` },
+                        responseType: 'blob'
+                      });
+                      const url = window.URL.createObjectURL(new Blob([response.data]));
+                      const link = document.createElement('a');
+                      link.href = url;
+                      link.setAttribute('download', `${group?.name}_report.pdf`);
+                      document.body.appendChild(link);
+                      link.click();
+                      link.remove();
+                    } catch (err) {
+                      alert('Failed to export PDF');
+                    }
+                  }}
                   className="w-12 h-12 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-400 hover:text-[#0F172A] transition-all"
                   title="Export PDF"
                 >
                   <FileText size={20} />
                 </button>
                 <button 
-                  onClick={() => window.open(`http://localhost:8000/api/reports/group/${id}/excel/`, '_blank')}
+                  onClick={async () => {
+                    try {
+                      const response = await axios.get(`http://localhost:8000/api/reports/group/${id}/excel/`, {
+                        headers: { Authorization: `Bearer ${token}` },
+                        responseType: 'blob'
+                      });
+                      const url = window.URL.createObjectURL(new Blob([response.data]));
+                      const link = document.createElement('a');
+                      link.href = url;
+                      link.setAttribute('download', `${group?.name}_report.xlsx`);
+                      document.body.appendChild(link);
+                      link.click();
+                      link.remove();
+                    } catch (err) {
+                      alert('Failed to export Excel');
+                    }
+                  }}
                   className="w-12 h-12 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-400 hover:text-[#0F172A] transition-all"
                   title="Export Excel"
                 >
                   <Table size={20} />
                 </button>
              </div>
+
              <button 
                onClick={() => setShowAnalytics(!showAnalytics)}
                className={`w-12 h-12 flex items-center justify-center rounded-full transition-all border ${showAnalytics ? 'bg-[#0F172A] text-white border-[#0F172A] shadow-lg shadow-[#0F172A]/20' : 'bg-white/50 border-slate-200 text-slate-400 hover:text-[#0F172A]'}`}
@@ -200,7 +234,8 @@ const GroupDetail = () => {
                      <div className="w-2 h-2 rounded-full bg-[#6366F1]" />
                      <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Analytics & Insights</span>
                   </div>
-                  <Analytics expenses={getExpenses.data} />
+                  <Analytics expenses={getExpenses.data} currency={group?.currency} />
+
                </div>
              </motion.div>
           )}
@@ -277,9 +312,10 @@ const GroupDetail = () => {
                                </button>
                             )}
                             <div>
-                               <div className="font-bold text-3xl tracking-tighter text-[#0F172A]">₹{parseFloat(expense.amount).toLocaleString()}</div>
+                               <div className="font-bold text-3xl tracking-tighter text-[#0F172A]">{group?.currency} {parseFloat(expense.amount).toLocaleString()}</div>
                                <div className="text-[9px] text-slate-400 font-black uppercase tracking-[0.3em] mt-1">{expense.category}</div>
                             </div>
+
                          </div>
                       </motion.div>
                    ))}
@@ -325,8 +361,9 @@ const GroupDetail = () => {
                                </div>
                             </div>
                             <div className={`font-bold text-2xl tracking-tighter ${isPayer ? 'text-[#0F172A]' : 'text-[#84CC16]'}`}>
-                               {isPayer ? '-' : '+'}₹{parseFloat(s.amount).toFixed(2)}
+                               {isPayer ? '-' : '+'}{group?.currency} {parseFloat(s.amount).toFixed(2)}
                             </div>
+
                           </motion.div>
                         );
                      })
@@ -380,8 +417,9 @@ const GroupDetail = () => {
                         
                         <div className="flex flex-col items-end gap-3">
                            <div className={`text-lg font-bold tracking-tighter ${balance.net_balance >= 0 ? 'text-[#0F172A]' : 'text-[#EC4899]'}`}>
-                              ₹{Math.abs(balance.net_balance).toFixed(2)}
+                              {group?.currency} {Math.abs(balance.net_balance).toFixed(2)}
                            </div>
+
                            
                            <div className="flex gap-2">
                               {isMe && balance.net_balance < 0 && (

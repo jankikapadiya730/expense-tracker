@@ -1,15 +1,16 @@
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 
-const Analytics = ({ expenses }) => {
+const Analytics = ({ expenses, currency = '₹' }) => {
   if (!expenses || expenses.length === 0) return null;
 
   // Process data for category pie chart
   const categoryData = expenses.reduce((acc, curr) => {
     const category = curr.category || 'other';
+    const amount = parseFloat(curr.converted_amount || curr.amount);
     const found = acc.find(item => item.name === category);
-    if (found) found.value += parseFloat(curr.amount);
-    else acc.push({ name: category, value: parseFloat(curr.amount) });
+    if (found) found.value += amount;
+    else acc.push({ name: category, value: amount });
     return acc;
   }, []);
 
@@ -17,7 +18,7 @@ const Analytics = ({ expenses }) => {
   const timeData = expenses.slice(0, 7).reverse().map(e => ({
     name: e.title.length > 10 ? e.title.substring(0, 8) + '...' : e.title,
     fullTitle: e.title,
-    amount: parseFloat(e.amount)
+    amount: parseFloat(e.converted_amount || e.amount)
   }));
 
   const COLORS = ['#0F172A', '#6366F1', '#94A3B8', '#1E293B', '#4F46E5', '#334155'];
@@ -44,6 +45,7 @@ const Analytics = ({ expenses }) => {
               <Tooltip 
                 contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.95)', border: '1px solid #E2E8F0', borderRadius: '16px', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.05)', backdropFilter: 'blur(8px)' }}
                 itemStyle={{ color: '#0F172A', fontWeight: 'bold', fontSize: '11px', textTransform: 'uppercase' }}
+                formatter={(value) => [`${currency} ${value.toLocaleString()}`, 'Total']}
               />
             </PieChart>
           </ResponsiveContainer>
@@ -69,7 +71,7 @@ const Analytics = ({ expenses }) => {
                  cursor={{ fill: 'rgba(99, 102, 241, 0.05)', radius: 8 }}
                  contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.95)', border: '1px solid #E2E8F0', borderRadius: '16px', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.05)', backdropFilter: 'blur(8px)' }}
                  itemStyle={{ color: '#0F172A', fontWeight: 'bold', fontSize: '11px', textTransform: 'uppercase' }}
-                 formatter={(value, name, props) => [`₹${value.toLocaleString()}`, props.payload.fullTitle]}
+                 formatter={(value, name, props) => [`${currency} ${value.toLocaleString()}`, props.payload.fullTitle]}
               />
               <Bar dataKey="amount" fill="#0F172A" radius={[20, 20, 20, 20]} barSize={12} />
             </BarChart>
@@ -77,6 +79,7 @@ const Analytics = ({ expenses }) => {
         </div>
       </div>
     </div>
+
   );
 };
 
